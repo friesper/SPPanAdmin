@@ -50,6 +50,12 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-3 control-label">角色单位：</label>
+                            <div class="col-sm-8">
+                                <input id="workUnit" name="workUnit" class="form-control" type="text" value="${role.workUnit}" <#if role?exists>   readonly="readonly"  </#if> required="required" >
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-3 control-label">角色名称：</label>
                             <div class="col-sm-8">
                                 <input id="name" name="name" class="form-control" type="text" value="${role.name}">

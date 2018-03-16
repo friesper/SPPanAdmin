@@ -120,6 +120,10 @@ public class User extends BaseEntity {
     @JoinTable(name = "tb_user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private java.util.Set<Role> roles;
 
+    @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JoinTable(name = "tb_user_school", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "school_id")})
+    private java.util.Set<Role> schools;
+
     public Integer getId() {
         return id;
     }
@@ -246,5 +250,13 @@ public class User extends BaseEntity {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Set<Role> getSchools() {
+        return schools;
+    }
+
+    public void setSchools(Set<Role> schools) {
+        this.schools = schools;
     }
 }

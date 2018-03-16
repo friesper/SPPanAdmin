@@ -7,6 +7,7 @@
 <#assign js>
 <script>
     function del(id){
+        console.log("id"+id)
         layer.confirm('确定删除吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
                 type: "POST",

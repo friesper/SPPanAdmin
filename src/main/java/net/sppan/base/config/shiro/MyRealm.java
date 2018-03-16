@@ -1,8 +1,10 @@
 package net.sppan.base.config.shiro;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
+import net.sppan.base.Application;
 import net.sppan.base.common.utils.MD5Utils;
 import net.sppan.base.entity.Resource;
 import net.sppan.base.entity.Role;
@@ -23,6 +25,8 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +35,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class MyRealm extends AuthorizingRealm {
+    private static Logger logger = LoggerFactory.getLogger(Application.class);
 
     public MyRealm() {
         super(new AllowAllCredentialsMatcher());
@@ -56,10 +61,11 @@ public class MyRealm extends AuthorizingRealm {
             Set<Resource> resources = role.getResources();
             for (Resource resource : resources) {
                 shiroPermissions.add(resource.getSourceKey());
-
             }
             roleSet.add(role.getRoleKey());
         }
+        Iterator iterator=shiroPermissions.iterator();
+        if (iterator.hasNext())
         authorizationInfo.setRoles(roleSet);
         authorizationInfo.setStringPermissions(shiroPermissions);
         return authorizationInfo;

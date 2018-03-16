@@ -88,7 +88,7 @@ public class UserController extends BaseController {
 
         List<Role> roles = roleService.findAll();
         map.put("roles", roles);
-        return "admin/user/grant";
+        return "admin/user/index";
     }
 
     @ResponseBody
@@ -122,6 +122,7 @@ public class UserController extends BaseController {
             e.printStackTrace();
             return JsonResult.failure(e.getMessage());
         }
+
         return JsonResult.success();
     }
 }

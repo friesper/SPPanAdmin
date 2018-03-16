@@ -6,10 +6,14 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import net.sppan.base.Application;
 import net.sppan.base.dao.support.IBaseDao;
 import net.sppan.base.entity.support.BaseEntity;
 import net.sppan.base.service.support.IBaseService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -17,10 +21,12 @@ import org.springframework.data.jpa.domain.Specification;
 
 @Transactional
 public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializable> implements IBaseService<T, ID> {
+    private static Logger logger = LoggerFactory.getLogger(Application.class);
 
+
+    @Autowired
     public abstract IBaseDao<T, ID> getBaseDao();
 
-    @Override
     public T find(ID id) {
         return getBaseDao().findOne(id);
     }

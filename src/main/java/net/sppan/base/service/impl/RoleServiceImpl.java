@@ -80,10 +80,11 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, Integer> implements I
             for (int i = 0; i < resourceIds.length; i++) {
                 if (StringUtils.isBlank(resourceIds[i]) || "0".equals(resourceIds[i])) {
                     continue;
+                }else {
+                    Integer rid = Integer.parseInt(resourceIds[i]);
+                    resource = resourceService.find(rid);
+                    resources.add(resource);
                 }
-                Integer rid = Integer.parseInt(resourceIds[i]);
-                resource = resourceService.find(rid);
-                resources.add(resource);
             }
         }
         role.setResources(resources);

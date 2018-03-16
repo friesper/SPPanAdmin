@@ -35,9 +35,12 @@
         var nodes = treeObj.getCheckedNodes(true);
         var selectIds="";
         for(var index in nodes){
+            if (!(nodes[index].getParentNode()==null)){
             var item=nodes[index];
             selectIds+=item.id+",";
+            }
         }
+        console.log(selectIds)
         $.ajax({
             url : "${ctx!}/admin/role/grant/${role.id}?t=" + Math.random(),
             type : "post",

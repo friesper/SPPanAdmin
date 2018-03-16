@@ -12,7 +12,7 @@
             data: $(".form-edit").serialize(),
             success: function(msg){
                 layer.msg(msg.message, {time: 2000},function(){
-                    if(msg.code ==0){
+                    if(msg.code.equals(0)){
                         window.location.href = "${ctx!}/admin/logout";
                     } else {
                         location.reload();

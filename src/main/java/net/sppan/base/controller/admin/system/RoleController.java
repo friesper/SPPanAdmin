@@ -1,5 +1,8 @@
 package net.sppan.base.controller.admin.system;
 
+import net.sppan.base.Application;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -18,7 +21,7 @@ import net.sppan.base.service.IRoleService;
 @Controller
 @RequestMapping("/admin/role")
 public class RoleController extends BaseController {
-
+    private static Logger logger = LoggerFactory.getLogger(Application.class);
     @Autowired
     private IRoleService roleService;
 
@@ -58,6 +61,7 @@ public class RoleController extends BaseController {
     @ResponseBody
     public JsonResult delete(@PathVariable Integer id, ModelMap map) {
         try {
+            logger.debug("roleservice  id "+id);
             roleService.delete(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,11 +81,14 @@ public class RoleController extends BaseController {
     @ResponseBody
     public JsonResult grant(@PathVariable Integer id,
                             @RequestParam(required = false) String[] resourceIds, ModelMap map) {
+
         try {
             roleService.grant(id, resourceIds);
         } catch (Exception e) {
             e.printStackTrace();
             return JsonResult.failure(e.getMessage());
+        }
+        finally {
         }
         return JsonResult.success();
     }

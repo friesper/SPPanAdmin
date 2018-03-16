@@ -53,6 +53,9 @@ public class Role extends BaseEntity {
      */
     private String roleKey;
 
+    @Column(name = "work_unit", nullable = false)
+    private String  workUnit;
+
     /**
      * 角色状态,0：正常；1：删除
      */
@@ -75,7 +78,7 @@ public class Role extends BaseEntity {
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-    @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(name = "tb_role_resource", joinColumns = {@JoinColumn(name = "role_id")}, inverseJoinColumns = {@JoinColumn(name = "resource_id")})
     private java.util.Set<Resource> resources;
 
@@ -102,6 +105,10 @@ public class Role extends BaseEntity {
     public void setRoleKey(String roleKey) {
         this.roleKey = roleKey;
     }
+    public String getWorkUnit(){
+        return  workUnit;
+    }
+    public void setWorkUnit(String workUnit){this.workUnit=workUnit;}
 
     public Integer getStatus() {
         return status;

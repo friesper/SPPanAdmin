@@ -30,7 +30,9 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+    <script>
 
+    </script>
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
@@ -119,7 +121,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <@shiro.hasPermission name="system:user:index">
+               <@shiro.hasPermission name="system:user:index">
                 <li <#if active=="user">class="active"</#if>><a href="${ctx!}/admin/user/index"><i class="fa fa-user-o"></i> 用户管理</a></li>
             </@shiro.hasPermission>
             <@shiro.hasPermission name="system:role:index">
@@ -128,8 +130,39 @@
             <@shiro.hasPermission name="system:resource:index">
                 <li <#if active=="resource">class="active"</#if>><a href="${ctx!}/admin/resource/index"><i class="fa fa-file-o"></i> 资源管理</a></li>
             </@shiro.hasPermission>
+    <@shiro.lacksPermission name="system:resource:index">
+    <script>
+        console.log("no have   permission")
+    </script>
+    </@shiro.lacksPermission>
+
           </ul>
         </li>
+          <li class="treeview <#if active=="user" || active=="role" || active=="resource" >active</#if>">
+              <a href="#">
+                  <i class="fa fa-cog"></i> <span>信息管理</span>
+                  <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+              </a>
+              <ul class="treeview-menu">
+               <@shiro.hasPermission name="system:user:index">
+                <li <#if active=="user">class="active"</#if>><a href="${ctx!}/admin/user/index"><i class="fas fa-bus"></i> 车辆信息</a></li>
+               </@shiro.hasPermission>
+            <@shiro.hasPermission name="system:role:index">
+                <li <#if active=="role">class="active"</#if>><a href="${ctx!}/admin/driver/index"><i class="fa fa-user-circle-o"></i> 司机信息</a></li>
+            </@shiro.hasPermission>
+            <@shiro.hasPermission name="system:resource:index">
+                <li <#if active=="resource">class="active"</#if>><a href="${ctx!}/admin/resource/index"><i class="fas fa-table"></i> 校车接送信息</a></li>
+            </@shiro.hasPermission>
+    <@shiro.lacksPermission name="system:resource:index">
+    <script>
+        console.log("no have   permission")
+    </script>
+    </@shiro.lacksPermission>
+
+              </ul>
+          </li>
 
       </ul>
     </section>
@@ -148,7 +181,7 @@
     <div class="pull-right hidden-xs">
       <b>Version</b> 1.0.0
     </div>
-    <strong>Copyright &copy; 2018 <a href="http://whoismy8023.gitee.io">SPPan</a>.</strong> All rights
+    <strong>Copyright &copy; 2018 </strong> All rights
     reserved.
   </footer>
 </div>
