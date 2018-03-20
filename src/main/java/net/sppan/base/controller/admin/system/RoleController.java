@@ -1,6 +1,8 @@
 package net.sppan.base.controller.admin.system;
 
 import net.sppan.base.Application;
+import net.sppan.base.entity.School;
+import net.sppan.base.service.ISchoolService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +20,16 @@ import net.sppan.base.controller.BaseController;
 import net.sppan.base.entity.Role;
 import net.sppan.base.service.IRoleService;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/admin/role")
 public class RoleController extends BaseController {
     private static Logger logger = LoggerFactory.getLogger(Application.class);
     @Autowired
     private IRoleService roleService;
+    @Autowired
+    private ISchoolService schoolService;
 
     @RequestMapping(value = {"/index"})
     public String index(ModelMap modelMap) {

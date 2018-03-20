@@ -5,25 +5,57 @@
 </#assign>
 <#assign js>
 <script>
+    window.onload=function(){
+        var url   = "${ctx!}/admin/school/schoolList";  //这里填写后端的url
+        $.ajax({   //2、发送给后端
+            url: url,
+            type: "GET",
+            dataType: "JSON",  //返回的数据类型
+            success: function(ress){
+                    var string=ress.data;
+                    var jsonstring=jQuery.parseJSON(string);
+                    for(var p in jsonstring) {//遍历json数组时，这么写p为索引，0,1
+                    if (${role.schoolId} == jsonstring[p].id ) {
+                            $(".schoolList").prepend("<option value =" + jsonstring[p].id + ">" + jsonstring[p].name + "</option>");
+
+                        } else {
+                        $(".schoolList").append("<option value =" + jsonstring[p].id + ">" + jsonstring[p].name + "</option>");
+
+                       }
+                 }
+                $(".schoolList").val(${role.schoolId});
+
+            }
+
+        });
+    }
+</script>
+<script>
     $(".btn-submit").click(function () {
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: "${ctx!}/admin/role/edit",
+                url: "${ctx!}/admin/role/edit",
             data: $(".form-edit").serialize(),
             success: function(res){
                 layer.msg(res.message, {time: 2000
                 }, function(){
-                    location.reload();
+                    location.replace("/admin/role/index");
+                });
+            }
+            error:function (res) {
+                layer.msg(res.message, {time: 2000
+                }, function(){
+                    location.replace("/admin/role/index");
                 });
             }
         });
     });
 </script>
 </#assign>
-<@layout title="角色编辑" active="role">
+<@layout title="角色编辑" active="role" >
 <!-- Content Header (Page header) -->
-<section class="content-header">
+<section class="content-header" onload="load()">
     <h1>
         角色编辑
         <small>编辑角色详细信息</small>
@@ -35,12 +67,12 @@
     </ol>
 </section>
 <!-- Main content -->
-<section class="content">
+<section class="content" >
     <div class="row">
         <div class="col-md-10">
             <!-- Default box -->
             <div class="box  box-primary">
-                <form class="form-horizontal form-edit" id="frm" method="post" action="${ctx!}/admin/role/edit">
+                <form class="form-horizontal form-edit" id="frm" method="post" action="${ctx!}/admin/role/edit" onload="load()">
                     <div class="box-body">
                         <input type="hidden" id="id" name="id" value="${role.id}">
                         <div class="form-group">
@@ -52,7 +84,9 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">角色单位：</label>
                             <div class="col-sm-8">
-                                <input id="workUnit" name="workUnit" class="form-control" type="text" value="${role.workUnit}" <#if role?exists>   readonly="readonly"  </#if> required="required" >
+
+                                <select name="schoolList" class="form-control schoolList" >
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -84,6 +118,7 @@
                 </form>
             </div>
             <!-- /.box -->
+
         </div>
     </div>
 </section>

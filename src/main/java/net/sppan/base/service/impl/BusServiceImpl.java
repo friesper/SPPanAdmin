@@ -18,9 +18,11 @@ public class BusServiceImpl extends BaseServiceImpl<Bus,Integer> implements IBus
 
     @Autowired
     IBusService iBusService;
+    @Autowired
+    IBusDao busDao;
     @Override
     public IBaseDao<Bus, Integer> getBaseDao() {
-        return null;
+        return busDao;
     }
 
     @Override

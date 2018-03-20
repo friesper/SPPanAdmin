@@ -5,6 +5,7 @@
 </#assign>
 <#assign js>
 <script>
+
     $(".btn-submit").click(function () {
         $.ajax({
             type: "POST",
@@ -14,7 +15,7 @@
             success: function(res){
                 layer.msg(res.message, {time: 2000
                 }, function(){
-                    location.reload();
+                    location.replace("/admin/user/index");
                 });
             }
         });

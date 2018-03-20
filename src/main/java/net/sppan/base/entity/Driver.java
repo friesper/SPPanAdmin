@@ -13,14 +13,17 @@ public class Driver extends BaseEntity {
     @Column(name = "id", nullable = false)
     private Integer id;
     private String name;
-    private Integer phone;
+    private String phone;
     @Column(name = "bus_id",nullable = false)
     private Integer busId;
+    @Column(name = "bus_number")
+    private String busNumber;
     private String  driverImage;
 
     @Column(name = "work_unit_id")
     private Integer workUnitId;
-
+    @Column(name = "work_unit_name")
+    private String workUnitName;
     public Integer getId() {
         return id;
     }
@@ -37,11 +40,11 @@ public class Driver extends BaseEntity {
         this.name = name;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -67,5 +70,35 @@ public class Driver extends BaseEntity {
 
     public void setWorkUnitId(Integer workUnitId) {
         this.workUnitId = workUnitId;
+    }
+
+    public String getBusNumber() {
+        return busNumber;
+    }
+
+    public void setBusNumber(String busNumber) {
+        this.busNumber = busNumber;
+    }
+
+    public String getWorkUnitName() {
+        return workUnitName;
+    }
+
+    public void setWorkUnitName(String workUnitName) {
+        this.workUnitName = workUnitName;
+    }
+
+    @Override
+    public String toString() {
+        return "Driver{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", phone=" + phone +
+                ", busId=" + busId +
+                ", busNumber='" + busNumber + '\'' +
+                ", driverImage='" + driverImage + '\'' +
+                ", workUnitId=" + workUnitId +
+                ", workUnitName='" + workUnitName + '\'' +
+                '}';
     }
 }

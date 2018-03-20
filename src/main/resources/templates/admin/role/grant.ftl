@@ -40,7 +40,6 @@
             selectIds+=item.id+",";
             }
         }
-        console.log(selectIds)
         $.ajax({
             url : "${ctx!}/admin/role/grant/${role.id}?t=" + Math.random(),
             type : "post",

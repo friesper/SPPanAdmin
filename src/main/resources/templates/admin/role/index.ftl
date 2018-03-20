@@ -43,6 +43,7 @@
     <div class="box box-primary">
         <div class="box-header">
         <@shiro.hasPermission name="system:role:add">
+
             <a class="btn btn-sm btn-success" href="${ctx!}/admin/role/add">新增</a>
         </@shiro.hasPermission>
         </div>

@@ -53,8 +53,8 @@ public class Role extends BaseEntity {
      */
     private String roleKey;
 
-    @Column(name = "work_unit", nullable = false)
-    private String  workUnit;
+    @Column(name = "school_id", nullable = false)
+    private Integer  schoolId;
 
     /**
      * 角色状态,0：正常；1：删除
@@ -105,10 +105,6 @@ public class Role extends BaseEntity {
     public void setRoleKey(String roleKey) {
         this.roleKey = roleKey;
     }
-    public String getWorkUnit(){
-        return  workUnit;
-    }
-    public void setWorkUnit(String workUnit){this.workUnit=workUnit;}
 
     public Integer getStatus() {
         return status;
@@ -150,4 +146,11 @@ public class Role extends BaseEntity {
         this.resources = resources;
     }
 
+    public Integer getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(Integer schoolId) {
+        this.schoolId = schoolId;
+    }
 }

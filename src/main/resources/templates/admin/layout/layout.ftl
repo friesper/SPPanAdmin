@@ -42,7 +42,7 @@
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="../../index2.html" class="logo">
+    <a href="/admin/index" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>A</b>dmin</span>
       <!-- logo for regular state and mobile devices -->
@@ -130,15 +130,10 @@
             <@shiro.hasPermission name="system:resource:index">
                 <li <#if active=="resource">class="active"</#if>><a href="${ctx!}/admin/resource/index"><i class="fa fa-file-o"></i> 资源管理</a></li>
             </@shiro.hasPermission>
-    <@shiro.lacksPermission name="system:resource:index">
-    <script>
-        console.log("no have   permission")
-    </script>
-    </@shiro.lacksPermission>
 
           </ul>
         </li>
-          <li class="treeview <#if active=="user" || active=="role" || active=="resource" >active</#if>">
+          <li class="treeview <#if active=="bus" || active=="driver" || active=="info"||active=="school" >active</#if>">
               <a href="#">
                   <i class="fa fa-cog"></i> <span>信息管理</span>
                   <span class="pull-right-container">
@@ -146,21 +141,18 @@
             </span>
               </a>
               <ul class="treeview-menu">
-               <@shiro.hasPermission name="system:user:index">
-                <li <#if active=="user">class="active"</#if>><a href="${ctx!}/admin/user/index"><i class="fas fa-bus"></i> 车辆信息</a></li>
+               <@shiro.hasPermission name="system:bus:index">
+                <li <#if active=="bus">class="active"</#if>><a href="${ctx!}/admin/user/index"><i class="fa fa-bus"></i> 车辆信息</a></li>
                </@shiro.hasPermission>
-            <@shiro.hasPermission name="system:role:index">
-                <li <#if active=="role">class="active"</#if>><a href="${ctx!}/admin/driver/index"><i class="fa fa-user-circle-o"></i> 司机信息</a></li>
+            <@shiro.hasPermission name="system:driver:index">
+                <li <#if active=="driver">class="active"</#if>><a href="${ctx!}/admin/driver/index"><i class="fa fa-user-circle-o"></i> 司机信息</a></li>
             </@shiro.hasPermission>
-            <@shiro.hasPermission name="system:resource:index">
-                <li <#if active=="resource">class="active"</#if>><a href="${ctx!}/admin/resource/index"><i class="fas fa-table"></i> 校车接送信息</a></li>
+            <@shiro.hasPermission name="system:info:index">
+                <li <#if active=="info">class="active"</#if>><a href="${ctx!}/admin/info/index"><i class="fa fa-user"></i> 校车接送信息</a></li>
             </@shiro.hasPermission>
-    <@shiro.lacksPermission name="system:resource:index">
-    <script>
-        console.log("no have   permission")
-    </script>
-    </@shiro.lacksPermission>
-
+                  <@shiro.hasPermission name="system:school:index">
+                <li <#if active=="school">class="active"</#if>><a href="${ctx!}/admin/school/index"><i class="fa fa-university"></i> 学校信息</a></li>
+                  </@shiro.hasPermission>
               </ul>
           </li>
 

@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "tb_user")
+@Table(name = "tb_school")
 public class School extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -17,7 +17,6 @@ public class School extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Integer id;
-
     private String name;
     @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(name = "tb_school_driver", joinColumns = {@JoinColumn(name = "school_id")}, inverseJoinColumns = {@JoinColumn(name = "driver_id")})

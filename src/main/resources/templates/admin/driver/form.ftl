@@ -5,47 +5,54 @@
 </#assign>
 <#assign js>
 <script>
-
-    $(function() {
-        $('#driverImage').change(function(event) {
-            // 根据这个 <input> 获取文件的 HTML5 js 对象
-            var files = event.target.files, file;
-            if (files && files.length > 0) {
-                // 获取目前上传的文件
-                file = files[0];
-                // 来在控制台看看到底这个对象是什么
-                console.log(file);
-                // 那么我们可以做一下诸如文件大小校验的动作
-                if(file.size > 1024 * 1024 * 2) {
-                    alert('图片大小不能超过 2MB!');
-                    return false;
+    window.onload=function(){
+        console.log("hellomload");
+        var url   = "${ctx!}/admin/school/schoolList";  //这里填写后端的url
+        $.ajax({   //2、发送给后端
+            url: url,
+            type: "GET",
+            dataType: "JSON",  //返回的数据类型
+            success: function(ress){
+                var string=ress.data;
+                var jsonstring=jQuery.parseJSON(string);
+                for(var p in jsonstring) {//遍历json数组时，这么写p为索引，0,1
+                        $(".workUnitId").append("<option value =" + jsonstring[p].id + ">" + jsonstring[p].name + "</option>");
                 }
-                // !!!!!!
-                // 下面是关键的关键，通过这个 file 对象生成一个可用的图像 URL
-                // 获取 window 的 URL 工具
-                var URL = window.URL || window.webkitURL;
-                // 通过 file 生成目标 url
-                var imgURL = URL.createObjectURL(file);
-                // 用这个 URL 产生一个 <img> 将其显示出来
-                $('body').append($('<img/>').attr('src', imgURL));
-                // 使用下面这句可以在内存中释放对此 url 的伺服，跑了之后那个 URL 就无效了
-                // URL.revokeObjectURL(imgURL);
             }
         });
-    });
+    }
+</script>
+<script>
     $(".btn-submit").click(function () {
-        $.ajax({
-            type: "POST",
-            url: "${ctx!}/admin/driver/edit",
-            data: $(".form-edit").serialize(),
-            dataType: "JSON",
-            success: function(res){
-                layer.msg(res.message, {time: 2000
-                }, function(){
-                    location.reload();
-                });
-            }
-        });
+        var phonenumber=$("#phone").val();
+          if(phonenumber.length>11){
+              layer.msg("手机号不超过11位", {time: 2000
+              }, function(){
+              });
+          }
+
+        else {
+              $("#workUnitName").val($("#workUnitId").find("option:selected").text());
+              $.ajax({
+                  type: "POST",
+                  dataType: "json",
+                  url: "${ctx!}/admin/driver/edit",
+                  data: $(".form-edit").serialize(),
+                  success: function (ress) {
+                      console.log($(".form-edit").serialize());
+                      layer.msg(ress.message, {
+                          time: 2000
+                      }, function () {
+                          location.replace("/admin/driver/index");
+                      });
+                  }
+                  /*error: function (ress) {
+                      layer.msg(ress.message, {time: 2000
+                      }, function(){
+                      });
+                  }*/
+              });
+          }
     });
 </script>
 </#assign>
@@ -69,27 +76,36 @@
             <!-- Default box -->
             <div class="box  box-primary">
                 <form class="form-horizontal form-edit" method="post" action="${ctx!}/admin/driver/edit"   enctype="multipart/form-data" target="uploadIframe">
-
                         <div class="box-body">
                         <input type="hidden" id="id" name="id" value="${driver.id}">
+                        <input type="hidden" id="busId" name="busId" <#if driver.busId?exists> value="${driver.busId}" <#else >value=""</#if>>
+                        <input type="hidden" id="workUnitName" name="workUnitName"  <#if driver.workUnitName?exists>value="${driver.workUnitName}"<#else >value=""</#if>>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">姓名：</label>
                             <div class="col-sm-10">
-                                <input id="name" name="name" class="form-control" type="url" value="${driver.name}">
+                                <input id="name" name="name" class="form-control" type="text" value="${driver.name}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">电话：</label>
                             <div class="col-sm-10">
-                                <input id="phone" name="phone" class="form-control" type="url" value="${driver.phone}">
+                                <input id="phone" name="phone" class="form-control" value="${driver.phone}">
                             </div>
                         </div>
+
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">车辆Id：</label>
+                            <label class="col-sm-2 control-label">车辆号(车牌号)：</label>
                             <div class="col-sm-10">
-                                <input id="busId" name="busId" class="form-control" value="${driver.busId}">
+                                <input id="busNumber" name="busNumber" class="form-control" type="text" value="${driver.busNumber}">
                             </div>
                         </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">工作单位：</label>
+                                <div class="col-sm-10">
+                                    <select  id="workUnitId" name="workUnitId" class="form-control workUnitId"  >
+                                    </select>
+                                </div>
+                            </div>
                     </div>
                     <div class="box-footer">
                         <button type="button" class="btn btn-default btn-back">返回</button>

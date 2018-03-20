@@ -119,11 +119,6 @@ public class User extends BaseEntity {
     @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinTable(name = "tb_user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private java.util.Set<Role> roles;
-
-    @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinTable(name = "tb_user_school", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "school_id")})
-    private java.util.Set<Role> schools;
-
     public Integer getId() {
         return id;
     }
@@ -252,11 +247,25 @@ public class User extends BaseEntity {
         this.roles = roles;
     }
 
-    public Set<Role> getSchools() {
-        return schools;
-    }
-
-    public void setSchools(Set<Role> schools) {
-        this.schools = schools;
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", password='" + password + '\'' +
+                ", sex=" + sex +
+                ", birthday=" + birthday +
+                ", telephone='" + telephone + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", deleteStatus=" + deleteStatus +
+                ", locked=" + locked +
+                ", description='" + description + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", roles=" + roles +
+                '}';
     }
 }
