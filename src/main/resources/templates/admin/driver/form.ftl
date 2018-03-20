@@ -5,6 +5,20 @@
 </#assign>
 <#assign js>
 <script>
+    $("#btn-submitImage").click(function (){
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "${ctx!}/admin/driver/edit",
+            data: $(".form-edit").serialize(),
+            success: function (ress) {
+                });
+            }
+        });
+    }
+
+</script>
+<script>
     window.onload=function(){
         console.log("hellomload");
         var url   = "${ctx!}/admin/school/schoolList";  //这里填写后端的url
@@ -103,6 +117,13 @@
                                 <label class="col-sm-2 control-label">工作单位：</label>
                                 <div class="col-sm-10">
                                     <select  id="workUnitId" name="workUnitId" class="form-control workUnitId"  >
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">驾照：</label>
+                                <div class="col-sm-10">
+                                    <img src="${driver.driverImage}"> <button  id="btn-submitImage" type="button" class="btn btn-default ">选择</button>
                                     </select>
                                 </div>
                             </div>
