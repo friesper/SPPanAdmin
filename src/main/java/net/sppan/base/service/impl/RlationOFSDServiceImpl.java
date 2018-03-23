@@ -30,10 +30,28 @@ public class RlationOFSDServiceImpl extends BaseServiceImpl<RlationOFSD,Integer>
 
     @Override
     public List<RlationOFSD> findByDriverId(Integer id) {
-       List<RlationOFSD> list= RlationOFSDrDao.findBySchoolId(id);
+       List<RlationOFSD> list= RlationOFSDrDao.findByDriverId(id);
        for (int i=0;i<list.size();i++){
            logger.debug("dasd               ++++++"+list.get(i).toString());
        }
         return  list ;
+    }
+    @Override
+    public List<RlationOFSD> findBySchoolId(Integer id){
+        List<RlationOFSD> list= RlationOFSDrDao.findBySchoolId(id);
+        for (int i=0;i<list.size();i++){
+            logger.debug("dasd               ++++++"+list.get(i).toString());
+        }
+        return  list ;
+    }
+
+    @Override
+    public void deleteByDriverId(Integer id) {
+        RlationOFSDrDao.deleteByDriverId(id);
+    }
+
+    @Override
+    public void deleteAllByDriverId(Integer id) {
+        RlationOFSDrDao.deleteAllByDriverId(id);
     }
 }

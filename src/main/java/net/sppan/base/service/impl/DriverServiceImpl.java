@@ -4,7 +4,9 @@ import net.sppan.base.Application;
 import net.sppan.base.dao.IDriverDao;
 import net.sppan.base.dao.support.IBaseDao;
 import net.sppan.base.entity.Driver;
+import net.sppan.base.entity.RlationOFSD;
 import net.sppan.base.service.IDriverService;
+import net.sppan.base.service.IRlationOFSDService;
 import net.sppan.base.service.ISchoolService;
 import net.sppan.base.service.support.impl.BaseServiceImpl;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,8 @@ public class DriverServiceImpl extends BaseServiceImpl<Driver, Integer>
     @Autowired
     IDriverDao iDriverDao;
     @Autowired
+    IRlationOFSDService rlationOFSDService;
+    @Autowired
     ISchoolService schoolService;
     @Autowired
     IDriverService iDriverServicel;
@@ -42,10 +46,24 @@ public class DriverServiceImpl extends BaseServiceImpl<Driver, Integer>
             update(dbDriver);
         }
         else {
+
             save(driver);
+            RlationOFSD rlationOFSD=new RlationOFSD();
+            rlationOFSD.setDriverId(driver.getId());
+            rlationOFSD.setSchoolId(driver.getWorkUnitId());
+            logger.debug("driverserviceOmpl++++++++"+driver.toString());
+            rlationOFSDService.save(rlationOFSD);
         }
 
+
     }
+
+    @Override
+    public void delete(Integer integer) {
+        super.delete(integer);
+        rlationOFSDService.deleteAllByDriverId(integer);
+    }
+
     @Override
     public Page<Driver> findByWorkUnitId(Integer id,PageRequest pageRequest){
             return null;

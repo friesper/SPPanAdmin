@@ -40,7 +40,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: "${ctx!}/admin/driver/delete/" + id,
+                url: "${ctx!}/admin/nurse/delete/" + id,
                 success: function(res){
                     layer.msg(res.message, {time: 2000}, function () {
                         location.reload();
@@ -51,17 +51,17 @@
     }
 </script>
 </#assign>
-<@layout title="用户管理" active="driver">
+<@layout title="照管员管理" active="nurse">
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        司机列表
+        照管员列表
         <small>一切从这里开始</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-cog"></i> 系统</a></li>
-        <li><a href="#"><i class="fa fa-list-ul"></i> 司机管理</a></li>
-        <li class="active"><i class="fa fa-table"></i> 司机列表</li>
+        <li><a href="#"><i class="fa fa-list-ul"></i> 照管员管理</a></li>
+        <li class="active"><i class="fa fa-table"></i> 照管员列表</li>
     </ol>
 </section>
 
@@ -70,8 +70,8 @@
     <!-- Default box -->
     <div class="box box-primary">
         <div class="box-header">
-        <@shiro.hasPermission name="system:driver:add">
-            <a class="btn btn-sm btn-success" href="${ctx!}/admin/driver/add">新增</a>
+        <@shiro.hasPermission name="system:nurse:add">
+            <a class="btn btn-sm btn-success" href="${ctx!}/admin/nurse/add">新增</a>
         </@shiro.hasPermission>
         </div>
      <div class="box-body">
@@ -80,8 +80,6 @@
                     <th>ID</th>
                     <th>姓名</th>
                     <th>电话</th>
-                    <th>车辆(车牌号)</th>
-                    <th>驾照</th>
                     <th>所属单位</th>
                     <th>操作</th>
                 </tr>
@@ -90,15 +88,13 @@
                     <td>${userInfo.id}</td>
                     <td>${userInfo.name}</td>
                     <td>${userInfo.phone}</td>
-                    <td>${userInfo.busNumber}</td>
-                    <td><img src="/admin/image/${userInfo.driverImage}"  width="50" height="50" onerror='nofind(this)'></td>
                     <td>${userInfo.workUnitName}</td>
 
                     <td>
-                    <@shiro.hasPermission name="system:driver:edit">
-                        <a class="btn btn-sm btn-primary" href="${ctx!}/admin/driver/edit/${userInfo.id}">编辑</a>
+                    <@shiro.hasPermission name="system:nurse:edit">
+                        <a class="btn btn-sm btn-primary" href="${ctx!}/admin/nurse/edit/${userInfo.id}">编辑</a>
                     </@shiro.hasPermission>
-                    <@shiro.hasPermission name="system:driver:deleteBatch">
+                    <@shiro.hasPermission name="system:nurse:deleteBatch">
                         <button class="btn btn-sm btn-danger" onclick="del(${userInfo.id})">删除</button>
                     </@shiro.hasPermission>
                     </td>
@@ -107,7 +103,7 @@
             </table>
         </div>
         <div class="box-footer clearfix">
-            <@macro.page pageInfo=pageInfo url="${ctx!}/admin/dirver/index/"/>
+            <@macro.page pageInfo=pageInfo url="${ctx!}/admin/nurse/index/"/>
         </div>
     </div>
     <!-- /.box -->

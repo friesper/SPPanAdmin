@@ -15,15 +15,10 @@
                     var string=ress.data;
                     var jsonstring=jQuery.parseJSON(string);
                     for(var p in jsonstring) {//遍历json数组时，这么写p为索引，0,1
-                    if (${role.schoolId} == jsonstring[p].id ) {
-                            $(".schoolList").prepend("<option value =" + jsonstring[p].id + ">" + jsonstring[p].name + "</option>");
+                        $(".schoolId").append("<option value =" + jsonstring[p].id + ">" + jsonstring[p].name + "</option>");
 
-                        } else {
-                        $(".schoolList").append("<option value =" + jsonstring[p].id + ">" + jsonstring[p].name + "</option>");
-
-                       }
                  }
-                $(".schoolList").val(${role.schoolId});
+                $(".schoolId").val(${role.schoolId});
 
             }
 
@@ -35,15 +30,9 @@
         $.ajax({
             type: "POST",
             dataType: "json",
-                url: "${ctx!}/admin/role/edit",
+            url: "${ctx!}/admin/role/edit",
             data: $(".form-edit").serialize(),
             success: function(res){
-                layer.msg(res.message, {time: 2000
-                }, function(){
-                    location.replace("/admin/role/index");
-                });
-            }
-            error:function (res) {
                 layer.msg(res.message, {time: 2000
                 }, function(){
                     location.replace("/admin/role/index");
@@ -85,7 +74,7 @@
                             <label class="col-sm-3 control-label">角色单位：</label>
                             <div class="col-sm-8">
 
-                                <select name="schoolList" class="form-control schoolList" >
+                                <select name="schoolId" class="form-control schoolId" >
                                 </select>
                             </div>
                         </div>

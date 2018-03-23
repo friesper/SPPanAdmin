@@ -26,12 +26,12 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        学校列表
+        车辆列表
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-cog"></i> 系统</a></li>
-        <li><a href="#"><i class="fa fa-list-ul"></i> 学校管理</a></li>
-        <li class="active"><i class="fa fa-table"></i> 学校列表</li>
+        <li><a href="#"><i class="fa fa-list-ul"></i> 车辆管理</a></li>
+        <li class="active"><i class="fa fa-table"></i> 车辆列表</li>
     </ol>
 </section>
 
@@ -41,28 +41,28 @@
     <div class="box box-primary">
         <div class="box-header">
         <@shiro.hasPermission name="system:school:add">
-            <a class="btn btn-sm btn-success" href="${ctx!}/admin/school/add">新增</a>
+            <a class="btn btn-sm btn-success" href="${ctx!}/admin/bus/add">新增</a>
         </@shiro.hasPermission>
         </div>
         <div class="box-body">
             <table class="table table-striped">
                 <tr>
                     <th>ID</th>
-                    <th>名字</th>
+                    <th>车辆车号</th>
                 </tr>
-                <#list pageInfo.content as schoolInfo>
+                 <#list pageInfo.content as busInfo>
                 <tr>
-                    <td>${schoolInfo.id}</td>
-                    <td>${schoolInfo.name}</td>
+                    <td>${busInfo.id}</td>
+                    <td>${busInfo.number}</td>
                     <td>
-                    <@shiro.hasPermission name="system:school:edit">
-                        <a class="btn btn-sm btn-primary" href="${ctx!}/admin/school/edit/${schoolInfo.id}">编辑</a>
+                    <@shiro.hasPermission name="system:bus:edit">
+                        <a class="btn btn-sm btn-primary" href="${ctx!}/admin/bus/edit/${busInfo.id}">编辑</a>
                     </@shiro.hasPermission>
-                   <@shiro.hasPermission name="system:school:grant">
+                    <#--<@shiro.hasPermission name="system:school:grant">
                         <a class="btn btn-sm btn-warning" href="${ctx!}/admin/school/grant/${schoolInfo.id}">分配</a>
-                    </@shiro.hasPermission>
+                    </@shiro.hasPermission>-->
                     <@shiro.hasPermission name="system:school:deleteBatch">
-                        <button class="btn btn-sm btn-danger" onclick="del(${schoolInfo.id})">删除</button>
+                        <button class="btn btn-sm btn-danger" onclick="del(${busInfo.id})">删除</button>
                     </@shiro.hasPermission>
                     </td>
                 </tr>
@@ -70,7 +70,7 @@
             </table>
         </div>
         <div class="box-footer clearfix">
-            <@macro.page pageInfo=pageInfo url="${ctx!}/admin/school/index?" />
+            <@macro.page pageInfo=busInfo url="${ctx!}/admin/info/bus/index?" />
         </div>
     </div>
     <!-- /.box -->

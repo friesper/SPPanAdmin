@@ -14,4 +14,7 @@ public interface IRlationOFSDService extends IBaseService<RlationOFSD, Integer> 
     List<RlationOFSD> findList(Iterable<Integer> integers);
 
     List<RlationOFSD> findByDriverId(Integer id);
+    List<RlationOFSD> findBySchoolId(Integer id);
+    void deleteByDriverId(Integer id);
+    public void deleteAllByDriverId(Integer id);
 }

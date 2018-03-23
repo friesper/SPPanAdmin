@@ -1,7 +1,15 @@
 package net.sppan.base.controller;
 
 import net.sppan.base.common.DateEditor;
+import net.sppan.base.entity.Role;
+import net.sppan.base.entity.User;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.session.mgt.SessionKey;
+import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.apache.shiro.subject.support.DefaultSubjectContext;
+import org.apache.shiro.web.session.mgt.WebSessionKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.data.domain.PageRequest;
@@ -10,10 +18,12 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Set;
 
 public class BaseController {
     @Autowired
@@ -83,7 +93,26 @@ public class BaseController {
         PageRequest pageRequest = new PageRequest(page, size, sort);
         return pageRequest;
     }
+    protected User getUser(){
+        User user=null;
+        Cookie[] cookies=request.getCookies();
+        for (Cookie cookie:cookies) {
+            if (cookie.getName().equals("JSESSIONID"))
+                try{
+                    SessionKey key = new WebSessionKey(cookie.getValue(),this.request,this.response);
+                    Session se = SecurityUtils.getSecurityManager().getSession(key);
+                    Object obj = se.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
+                    SimplePrincipalCollection coll = (SimplePrincipalCollection) obj;
+                    user=(User)coll.getPrimaryPrincipal();
 
+                }catch(Exception e){
+                    e.printStackTrace();
+                }finally{
+                    return  user;
+                }
+        }
+        return  user;
+    }
     /**
      * 获取分页请求
      *
@@ -113,5 +142,6 @@ public class BaseController {
         PageRequest pageRequest = new PageRequest(page, size, sort);
         return pageRequest;
     }
+
 
 }

@@ -133,7 +133,7 @@
 
           </ul>
         </li>
-          <li class="treeview <#if active=="bus" || active=="driver" || active=="info"||active=="school" >active</#if>">
+          <li class="treeview <#if active=="bus" || active=="driver" || active=="info"||active=="school" ||active=="nurse">active</#if>">
               <a href="#">
                   <i class="fa fa-cog"></i> <span>信息管理</span>
                   <span class="pull-right-container">
@@ -142,11 +142,14 @@
               </a>
               <ul class="treeview-menu">
                <@shiro.hasPermission name="system:bus:index">
-                <li <#if active=="bus">class="active"</#if>><a href="${ctx!}/admin/user/index"><i class="fa fa-bus"></i> 车辆信息</a></li>
+                <li <#if active=="bus">class="active"</#if>><a href="${ctx!}/admin/bus/index"><i class="fa fa-bus"></i> 车辆信息</a></li>
                </@shiro.hasPermission>
             <@shiro.hasPermission name="system:driver:index">
                 <li <#if active=="driver">class="active"</#if>><a href="${ctx!}/admin/driver/index"><i class="fa fa-user-circle-o"></i> 司机信息</a></li>
             </@shiro.hasPermission>
+                  <@shiro.hasPermission name="system:nurse:index">
+                <li <#if active=="nurse">class="active"</#if>><a href="${ctx!}/admin/nurse/index"><i class="fa fa-user-circle-o"></i> 照管员信息</a></li>
+                  </@shiro.hasPermission>
             <@shiro.hasPermission name="system:info:index">
                 <li <#if active=="info">class="active"</#if>><a href="${ctx!}/admin/info/index"><i class="fa fa-user"></i> 校车接送信息</a></li>
             </@shiro.hasPermission>

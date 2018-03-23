@@ -1,21 +1,21 @@
 package net.sppan.base.dao;
 
 import net.sppan.base.dao.support.IBaseDao;
-import net.sppan.base.entity.Driver;
-import net.sppan.base.entity.School;
+import net.sppan.base.entity.Bus;
+import net.sppan.base.entity.BusInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
 @Repository
-public interface ISchoolDao extends IBaseDao<School,Integer> {
-    @Override
-    Page<School> findAll(Pageable pageable);
+public interface IBusInfoDao extends IBaseDao<BusInfo,Integer> {
 
     @Override
-    School findOne(Specification<School> specification);
-
-
+    Page<BusInfo> findAll(Pageable pageable);
+    List<BusInfo> findAllByBusId(Integer id);
+    @Override
+    List<BusInfo> findAll(Specification<BusInfo> specification);
 }

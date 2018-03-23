@@ -23,7 +23,6 @@ public class School extends BaseEntity {
     private java.util.Set<Driver> drivers;
 
 
-
     public Integer getId() {
         return id;
     }

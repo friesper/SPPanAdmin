@@ -5,21 +5,14 @@ import net.sppan.base.entity.support.BaseEntity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "tb_driver")
-public class Driver extends BaseEntity {
-    private static final long serialVersionUID = 1L;
+@Table(name = "tb_nurse")
+public class Nurse extends BaseEntity {
     @Id
-    @GeneratedValue(strategy  = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Integer id;
     private String name;
     private String phone;
-    @Column(name = "bus_id",nullable = false)
-    private Integer busId;
-    @Column(name = "bus_number")
-    private String busNumber;
-    private String  driverImage;
-
     @Column(name = "work_unit_id")
     private Integer workUnitId;
     @Column(name = "work_unit_name")
@@ -48,36 +41,12 @@ public class Driver extends BaseEntity {
         this.phone = phone;
     }
 
-    public String getDriverImage() {
-        return driverImage;
-    }
-
-    public void setDriverImage(String driverImage) {
-        this.driverImage = driverImage;
-    }
-
-    public Integer getBusId() {
-        return busId;
-    }
-
-    public void setBusId(Integer busId) {
-        this.busId = busId;
-    }
-
     public Integer getWorkUnitId() {
         return workUnitId;
     }
 
     public void setWorkUnitId(Integer workUnitId) {
         this.workUnitId = workUnitId;
-    }
-
-    public String getBusNumber() {
-        return busNumber;
-    }
-
-    public void setBusNumber(String busNumber) {
-        this.busNumber = busNumber;
     }
 
     public String getWorkUnitName() {
@@ -90,15 +59,10 @@ public class Driver extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Driver{" +
+        return "nurse{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", phone=" + phone +
-                ", busId=" + busId +
-                ", busNumber='" + busNumber + '\'' +
-                ", driverImage='" + driverImage + '\'' +
-                ", workUnitId=" + workUnitId +
-                ", workUnitName='" + workUnitName + '\'' +
+                ", phone='" + phone + '\'' +
                 '}';
     }
 }

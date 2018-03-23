@@ -20,10 +20,8 @@
                     for (var p in jsonstring) {//遍历json数组时，这么写p为索引，0,1
                         $("#workUnitId").append("<option value =" + jsonstring[p].id + ">" + jsonstring[p].name + "</option>");
                     }
-                    $("#workUnitId").val( ${driver.workUnitId});
-                    if (roleId !=1) {
-                        $("#workUnitId").setAttribute("readonly","readonly");
-                        $("#workUnitId").val(schoolId);
+                    $("#workUnitId").val(${nurse.workUnitId});
+                    $("#workUnitId").val(${nurse.workUnitId});
                     }
                 }
             });
@@ -41,23 +39,19 @@
           }
 
         else {
-              var formData = new FormData(document.getElementById("form"))
-              $("#driverImage")
               $("#workUnitName").val($("#workUnitId").find("option:selected").text());
               $.ajax({
                   type: "POST",
                   dataType: "json",
-                  url: "${ctx!}/admin/driver/edit",
+                  url: "${ctx!}/admin/nurse/edit",
                   async: false,
                   cache: false,
-                  contentType: false,
-                  processData: false,
-                  data: formData,
+                  data: $(".form-edit").serialize(),
                   success: function (ress) {
                       layer.msg(ress.message, {
                           time: 2000
                       }, function () {
-                          location.replace("/admin/driver/index");
+                          location.replace("/admin/nurse/index");
                       });
                   }
                   /*error: function (ress) {
@@ -70,17 +64,17 @@
     });
 </script>
 </#assign>
-<@layout title="用户编辑" active="driver">
+<@layout title="用户编辑" active="nurse">
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        司机信息编辑
-        <small>编辑司机详细信息</small>
+        照管员信息编辑
+        <small>编辑照管员详细信息</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-cog"></i> 系统</a></li>
-        <li><a href="#"><i class="fa fa-list-ul"></i> 司机管理</a></li>
-        <li class="active"><i class="fa fa-edit"></i> 司机编辑</li>
+        <li><a href="#"><i class="fa fa-list-ul"></i> 照管员管理</a></li>
+        <li class="active"><i class="fa fa-edit"></i> 照管员编辑</li>
     </ol>
 </section>
 <!-- Main content -->
@@ -89,48 +83,28 @@
         <div class="col-md-10">
             <!-- Default box -->
             <div class="box  box-primary">
-                <form  id="form" class="form-horizontal form-edit" method="post" action="${ctx!}/admin/driver/edit"   enctype="multipart/form-data" target="uploadIframe">
+                <form  id="form" class="form-horizontal form-edit" method="post" action="${ctx!}/admin/nurse/edit"   target="uploadIframe">
                         <div class="box-body">
-                        <input type="hidden" id="id" name="id" value="${driver.id}">
-                        <input type="hidden" id="busId" name="busId" <#if driver.busId?exists> value="${driver.busId}" <#else >value=""</#if>>
-                        <input type="hidden" id="workUnitName" name="workUnitName"  <#if driver.workUnitName?exists>value="${driver.workUnitName}"<#else >value=""</#if>>
+                        <input type="hidden" id="id" name="id" value="${nurse.id}">
+                        <input type="hidden" id="workUnitName" name="workUnitName"  <#if nurse.workUnitName?exists>value="${nurse.workUnitName}"<#else >value=""</#if>>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">姓名：</label>
                             <div class="col-sm-10">
-                                <input id="name" name="name" class="form-control" type="text" value="${driver.name}">
+                                <input id="name" name="name" class="form-control" type="text" value="${nurse.name}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">电话：</label>
                             <div class="col-sm-10">
-                                <input id="phone" name="phone" class="form-control" value="${driver.phone}">
+                                <input id="phone" name="phone" class="form-control" value="${nurse.phone}">
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">车辆号(车牌号)：</label>
-                            <div class="col-sm-10">
-                                <input id="busNumber" name="busNumber" class="form-control" type="text" value="${driver.busNumber}">
-                            </div>
-                        </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">工作单位：</label>
                                 <div class="col-sm-10">
                                     <select  id="workUnitId" name="workUnitId" class="form-control workUnitId" <#if roleId!=1>readonly="readonly" </#if>     >
                                     </select>
-                                </div>
-                            </div>
-                            <div class="form-group"  id="driverImageDiv"  >
-                                <label class="col-sm-2 control-label">驾照图片：</label>
-                                <div class="col-sm-10" >
-                                    <img id="showImage"  width="50" height="50" src="/admin/image/${driver.driverImage}" onerror='var list=document.getElementById("driverImageDiv");
-list.remove();'>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">上传驾照图片：</label>
-                                <div class="col-sm-10">
-                                    <input id="driverImageFile" name="driverImageFile" class="form-control" type="file" value="${driver.driverImageFile}">
                                 </div>
                             </div>
                     </div>
