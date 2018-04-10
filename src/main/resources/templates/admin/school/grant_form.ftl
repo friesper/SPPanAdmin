@@ -6,22 +6,6 @@
 <#assign js>
 <script>
     window.onload=function() {
-        console.log("onload");
-        $.ajax({   //2、发送给后端
-            url: "${ctx!}/admin/bus/busList",
-            type: "GET",
-            dataType: "JSON",  //返回的数据类型
-            success: function (ress) {
-                console.log("success");
-
-                var string = ress.data;
-                var jsonstring = jQuery.parseJSON(string);
-                for (var p in jsonstring) {//遍历json数组时，这么写p为索引，0,1
-                    $("#busId").append("<option value =" + jsonstring[p].id + ">" + jsonstring[p].number + "</option>");
-                }
-                $("#busId").val( ${pageInfo.busId});
-            }
-        });
 
         $.ajax({   //2、发送给后端
             url: "${ctx!}/admin/driver/driverList",
@@ -65,7 +49,7 @@
             success: function(res){
                 layer.msg(res.message, {time: 2000
                 }, function(){
-                    location.replace("/admin/school/grant/"+${pageInfo.schoolId});
+                    history.go(-1);
                 });
             }
         });
@@ -96,13 +80,6 @@
                     <div class="box-body">
                         <input type="hidden" id="id" name="id" value="${pageInfo.id}">
                         <input type="hidden" id="schoolId" name="schoolId" value="${pageInfo.schoolId}">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">校车：</label>
-                            <div class="col-sm-8">
-                                <select id="busId" name="busId" class="form-control busId" >
-                                </select>
-                            </div>
-                        </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">司机：</label>
                             <div class="col-sm-8">

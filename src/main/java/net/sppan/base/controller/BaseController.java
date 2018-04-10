@@ -1,6 +1,7 @@
 package net.sppan.base.controller;
 
 import net.sppan.base.common.DateEditor;
+import net.sppan.base.entity.Nurse;
 import net.sppan.base.entity.Role;
 import net.sppan.base.entity.User;
 import org.apache.commons.lang3.StringUtils;
@@ -93,6 +94,22 @@ public class BaseController {
         PageRequest pageRequest = new PageRequest(page, size, sort);
         return pageRequest;
     }
+    protected boolean sessionOverTime(){
+        boolean flag=true;
+        Cookie[] cookies=request.getCookies();
+        for (Cookie cookie:cookies) {
+            if (cookie.getName().equals("JSESSIONID"))
+                try{
+                if (request.getSession(false)==null){
+                    flag= false;
+                }else
+                    flag= true;
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+        }
+        return flag;
+    }
     protected User getUser(){
         User user=null;
         Cookie[] cookies=request.getCookies();
@@ -113,6 +130,7 @@ public class BaseController {
         }
         return  user;
     }
+
     /**
      * 获取分页请求
      *

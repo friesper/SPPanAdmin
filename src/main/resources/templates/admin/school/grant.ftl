@@ -46,14 +46,12 @@
          <table class="table table-striped">
              <tr>
                  <th>ID</th>
-                 <th>校车车牌号</th>
                  <th>司机姓名</th>
                  <th>照管员姓名</th>
              </tr>
                 <#list pageInfo.content as moreInfo >
                 <tr>
                     <td>${moreInfo.id}</td>
-                    <td>${moreInfo.busNumber}</td>
                     <td>${moreInfo.driverName}</td>
                     <td>${moreInfo.nurseName}</td>
                     <td>
@@ -72,7 +70,7 @@
          </table>
      </div>
      <div class="box-footer clearfix">
-            <@macro.page  url="${ctx!}/admin/school/grant" />
+            <@macro.page pageInfo=pageInfo  url="${ctx!}/admin/school/grant" />
      </div>
  </div>
 <!-- /.content -->

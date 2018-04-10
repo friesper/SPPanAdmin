@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -18,4 +19,5 @@ public interface IBusInfoDao extends IBaseDao<BusInfo,Integer> {
     List<BusInfo> findAllByBusId(Integer id);
     @Override
     List<BusInfo> findAll(Specification<BusInfo> specification);
+    List<BusInfo> findAllByBusIdAndCreateTime(Integer id, Date date);
 }

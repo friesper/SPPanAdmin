@@ -26,7 +26,6 @@ public class AdminIndexController extends BaseController {
     @Autowired
     private Environment env;
 
-
     @RequestMapping(value = {"/admin/", "/admin/index"})
     public String index() {
 

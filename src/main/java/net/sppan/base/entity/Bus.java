@@ -13,7 +13,7 @@ public class Bus extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Integer id;
-
+    @Column(name = "number")
     private String  number;
 
     public Integer getId() {

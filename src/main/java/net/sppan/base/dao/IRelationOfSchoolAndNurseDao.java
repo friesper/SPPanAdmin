@@ -10,4 +10,7 @@ import java.util.List;
 public interface IRelationOfSchoolAndNurseDao extends IBaseDao<RelationOfSchoolAndNurse,Integer> {
     public  List<RelationOfSchoolAndNurse> findByNurseId(Integer id);
     public List<RelationOfSchoolAndNurse> findBySchoolId(Integer id);
+    void  deleteAllBySchoolId(Integer id);
+    void  deleteAllByNurseId(Integer id);
+    void deleteAllByDriverId(Integer id);
 }

@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "tn_student_status")
+@Table(name = "tb_student_status")
 public class StudentStatus extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class StudentStatus extends BaseEntity {
     @Column(name = "driver_name")
     private String driverName;
 
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @JSONField(format = "yyyy-MM-dd")
     @Column(name = "take_time")
     private Date takeTime;
     @Column(name = "student_name")
@@ -33,6 +33,26 @@ public class StudentStatus extends BaseEntity {
     private String studentPhone;
     @Column(name = "time_quantum")
     private Integer timeQuantum;
+    @Column(name = "bus_number")
+    private String busNumber;
+    @Column(name = "status")
+    private Integer status;
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getBusNumber() {
+        return busNumber;
+    }
+
+    public void setBusNumber(String busNumber) {
+        this.busNumber = busNumber;
+    }
 
     public Integer getId() {
         return id;

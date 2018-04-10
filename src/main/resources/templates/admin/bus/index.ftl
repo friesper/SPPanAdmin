@@ -22,7 +22,7 @@
     }
 </script>
 </#assign>
-<@layout title="学校管理" active="school">
+<@layout title="车辆列表" active="bus">
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
@@ -40,7 +40,7 @@
     <!-- Default box -->
     <div class="box box-primary">
         <div class="box-header">
-        <@shiro.hasPermission name="system:school:add">
+        <@shiro.hasPermission name="system:bus:add">
             <a class="btn btn-sm btn-success" href="${ctx!}/admin/bus/add">新增</a>
         </@shiro.hasPermission>
         </div>

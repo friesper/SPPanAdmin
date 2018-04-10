@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 public class SchoolGrantInfo  {
     public SchoolGrantInfo(RelationOfSchoolAndNurse relationOfSchoolAndNurse){
         this.id=relationOfSchoolAndNurse.getId();
-        this.busId=relationOfSchoolAndNurse.getBusId();
         this.driverId=relationOfSchoolAndNurse.getDriverId();
         this.nurseId=relationOfSchoolAndNurse.getNurseId();
         this.schoolId=relationOfSchoolAndNurse.getSchoolId();
@@ -17,7 +16,6 @@ public class SchoolGrantInfo  {
     private Integer schoolId;
     private  Integer nurseId;
     private Integer driverId;
-    private  Integer busId;
     private  String driverName;
     private String busNumber;
     private String nurseName;
@@ -54,13 +52,7 @@ public class SchoolGrantInfo  {
         this.driverId = driverId;
     }
 
-    public Integer getBusId() {
-        return busId;
-    }
 
-    public void setBusId(Integer busId) {
-        this.busId = busId;
-    }
 
     public String getDriverName() {
         return driverName;
@@ -93,7 +85,6 @@ public class SchoolGrantInfo  {
                 ", schoolId=" + schoolId +
                 ", nurseId=" + nurseId +
                 ", driverId=" + driverId +
-                ", busId=" + busId +
                 ", driverName='" + driverName + '\'' +
                 ", busNumber='" + busNumber + '\'' +
                 ", nurseName='" + nurseName + '\'' +

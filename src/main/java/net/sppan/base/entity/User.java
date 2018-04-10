@@ -116,7 +116,7 @@ public class User extends BaseEntity {
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-    @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinTable(name = "tb_user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private java.util.Set<Role> roles;
     public Integer getId() {
@@ -247,25 +247,5 @@ public class User extends BaseEntity {
         this.roles = roles;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", nickName='" + nickName + '\'' +
-                ", avatar='" + avatar + '\'' +
-                ", password='" + password + '\'' +
-                ", sex=" + sex +
-                ", birthday=" + birthday +
-                ", telephone='" + telephone + '\'' +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                ", deleteStatus=" + deleteStatus +
-                ", locked=" + locked +
-                ", description='" + description + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", roles=" + roles +
-                '}';
-    }
+
 }

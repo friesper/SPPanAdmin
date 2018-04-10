@@ -23,7 +23,6 @@
                     $("#workUnitId").val(${nurse.workUnitId});
                     $("#workUnitId").val(${nurse.workUnitId});
                     }
-                }
             });
 
 
@@ -37,7 +36,16 @@
               }, function(){
               });
           }
-
+       else if($("#userName").val()==null||$("#userName").val()==""){
+            layer.msg("请输入用户名", {time: 2000
+            }, function(){
+            });
+        }
+        else if ($("#passWord").val()==null||$("#passWord").val()==""){
+            layer.msg("请输入密码", {time: 2000
+            }, function(){
+            });
+        }
         else {
               $("#workUnitName").val($("#workUnitId").find("option:selected").text());
               $.ajax({
@@ -93,6 +101,18 @@
                                 <input id="name" name="name" class="form-control" type="text" value="${nurse.name}">
                             </div>
                         </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">用户名(登陆用)：</label>
+                                <div class="col-sm-10">
+                                    <input id="userName" name="userName" class="form-control" type="text" value="${nurse.userName}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">密码：</label>
+                                <div class="col-sm-10">
+                                    <input id="passWord" name="passWord" class="form-control" type="text" value="${nurse.passWord}">
+                                </div>
+                            </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">电话：</label>
                             <div class="col-sm-10">

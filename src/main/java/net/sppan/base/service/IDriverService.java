@@ -12,4 +12,6 @@ public interface IDriverService extends IBaseService<Driver,Integer> {
     void saveOrUpdate(Driver driver);
     Page<Driver> findByWorkUnitId(Integer id, PageRequest pageRequest);
     public Page<Driver> findById(HashSet<Integer> ids, PageRequest pageRequest) ;
+    Driver findDriverByName(String name);
+    Driver findDriverByUserName(String name);
 }

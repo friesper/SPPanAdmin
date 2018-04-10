@@ -6,10 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import net.sppan.base.common.JsonResult;
 import net.sppan.base.controller.BaseController;
 import net.sppan.base.dao.IRelationAndBusDao;
-import net.sppan.base.entity.Bus;
-import net.sppan.base.entity.RelationOfSchoolAndBus;
-import net.sppan.base.entity.Role;
-import net.sppan.base.entity.User;
+import net.sppan.base.entity.*;
 import net.sppan.base.service.IRelationAndBusService;
 import net.sppan.base.service.impl.BusServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,12 +65,14 @@ public class BusController extends BaseController {
         return "admin/bus/form";
 
     }
-    @RequestMapping(value = "/edit",method = RequestMethod.GET)
+    @RequestMapping(value = "/edit",method = RequestMethod.POST)
     @ResponseBody
     public JsonResult edit(Bus bus){
 
         try {
-            busService.save(bus);
+            Integer schoolId=0;
+            schoolId=getUser().getRoles().iterator().next().getSchoolId();
+            busService.saveOrUpdate(bus,schoolId);
         } catch (Exception e) {
             return JsonResult.failure(e.getMessage());
         }

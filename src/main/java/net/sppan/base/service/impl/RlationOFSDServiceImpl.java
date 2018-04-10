@@ -54,4 +54,9 @@ public class RlationOFSDServiceImpl extends BaseServiceImpl<RlationOFSD,Integer>
     public void deleteAllByDriverId(Integer id) {
         RlationOFSDrDao.deleteAllByDriverId(id);
     }
+
+    @Override
+    public void deleteAllBySchoolId(Integer id) {
+        RlationOFSDrDao.deleteAllBySchoolId(id);
+    }
 }

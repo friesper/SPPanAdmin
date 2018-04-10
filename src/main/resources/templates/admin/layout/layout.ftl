@@ -46,7 +46,7 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>A</b>dmin</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>SPPan</b>Admin</span>
+      <span class="logo-lg"><b>慧通物联</b>Admin</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -133,7 +133,7 @@
 
           </ul>
         </li>
-          <li class="treeview <#if active=="bus" || active=="driver" || active=="info"||active=="school" ||active=="nurse">active</#if>">
+          <li class="treeview <#if active=="bus" || active=="driver" || active=="info"||active=="school" ||active=="nurse"||active=="busInfo">active</#if>">
               <a href="#">
                   <i class="fa fa-cog"></i> <span>信息管理</span>
                   <span class="pull-right-container">
@@ -153,6 +153,9 @@
             <@shiro.hasPermission name="system:info:index">
                 <li <#if active=="info">class="active"</#if>><a href="${ctx!}/admin/info/index"><i class="fa fa-user"></i> 校车接送信息</a></li>
             </@shiro.hasPermission>
+                  <@shiro.hasPermission name="system:info:index">
+                <li <#if active=="businfo">class="active"</#if>><a href="${ctx!}/admin/info/bus/index"><i class="fa fa-user"></i> 校车检测信息</a></li>
+                  </@shiro.hasPermission>
                   <@shiro.hasPermission name="system:school:index">
                 <li <#if active=="school">class="active"</#if>><a href="${ctx!}/admin/school/index"><i class="fa fa-university"></i> 学校信息</a></li>
                   </@shiro.hasPermission>

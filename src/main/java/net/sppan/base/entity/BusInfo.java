@@ -18,7 +18,11 @@ public class BusInfo extends BaseEntity {
     private Integer id;
     @Column(name = "bus_id")
     private  Integer busId;
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "bus_number")
+    private String busNumber;
+    @Column(name = "driver_name")
+    private String driverName;
+    @JSONField(format = "yyyy-MM-dd")
     @Column(name = "create_time")
     private Date createTime;
     @Column(name = "engine_hygiene")
@@ -76,6 +80,14 @@ public class BusInfo extends BaseEntity {
 
     public void setBusId(Integer busId) {
         this.busId = busId;
+    }
+
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
     }
 
     public Date getCreateTime() {
@@ -236,5 +248,13 @@ public class BusInfo extends BaseEntity {
 
     public void setInstrumentPanel(String instrumentPanel) {
         this.instrumentPanel = instrumentPanel;
+    }
+
+    public String getBusNumber() {
+        return busNumber;
+    }
+
+    public void setBusNumber(String busNumber) {
+        this.busNumber = busNumber;
     }
 }

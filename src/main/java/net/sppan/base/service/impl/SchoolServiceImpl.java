@@ -4,6 +4,9 @@ import net.sppan.base.dao.ISchoolDao;
 import net.sppan.base.dao.support.IBaseDao;
 import net.sppan.base.entity.Driver;
 import net.sppan.base.entity.School;
+import net.sppan.base.service.IRelationAndBusService;
+import net.sppan.base.service.IRelationOfSAService;
+import net.sppan.base.service.IRlationOFSDService;
 import net.sppan.base.service.ISchoolService;
 import net.sppan.base.service.support.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,12 @@ public class SchoolServiceImpl extends BaseServiceImpl<School,Integer> implement
     private ISchoolDao schoolDao;
     @Autowired
     private ISchoolService schoolService;
+    @Autowired
+    IRelationOfSAService relationOfSAServicel;
+    @Autowired
+    IRelationAndBusService relationAndBusService;
+    @Autowired
+    IRlationOFSDService rlationOFSDService;
     @Override
     public void saveOrUpdate(School school) {
 
@@ -37,6 +46,13 @@ public class SchoolServiceImpl extends BaseServiceImpl<School,Integer> implement
         List<School> list=schoolDao.findAll(ids);
         Page<School> driverPage=new PageImpl<School>(list,pageRequest,list.size());
         return  driverPage;
+    }
+    @Override
+    public void delete(Integer id){
+        super.delete(id);
+        relationAndBusService.deleteAllBySchoolId(id);
+        relationOfSAServicel.deleteAllBySchoolId(id);
+        rlationOFSDService.deleteAllBySchoolId(id);
     }
 
 }

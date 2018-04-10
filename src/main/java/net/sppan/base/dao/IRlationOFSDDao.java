@@ -13,4 +13,5 @@ public interface IRlationOFSDDao extends IBaseDao<RlationOFSD,Integer> {
     public List<RlationOFSD> findBySchoolId(Integer id);
     public void deleteByDriverId(Integer integer);
     public void deleteAllByDriverId(Integer id);
+    void deleteAllBySchoolId(Integer id);
 }

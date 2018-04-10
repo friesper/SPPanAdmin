@@ -1,11 +1,10 @@
 package net.sppan.base.config.shiro;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 
+import org.apache.shiro.authc.pam.FirstSuccessfulStrategy;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.mgt.DefaultSecurityManager;
@@ -28,13 +27,27 @@ public class ShiroConfig {
     private IResourceService resourceService;
 
 
-    @Bean(name = "realm")
+   /* @Bean(name = "realm")
     @DependsOn("lifecycleBeanPostProcessor")
     @ConditionalOnMissingBean
     public Realm realm() {
-        return new MyRealm();
-    }
+        return new AdminRealm();
+    }*/
 
+    @Bean(name = "FirstSuccessfulStrategy")
+    public FirstSuccessfulStrategy firstSuccessfulStrategy(){
+        FirstSuccessfulStrategy firstSuccessfulStrategy=new FirstSuccessfulStrategy();
+        return  firstSuccessfulStrategy;
+    }
+    @Bean(name = "realms")
+    @DependsOn("lifecycleBeanPostProcessor")
+    @ConditionalOnMissingBean
+    public Collection<Realm> realms() {
+        Collection<Realm> realms=new ArrayList<>();
+        realms.add(new AdminRealm());
+        realms.add(new UserRealm());
+        return realms;
+    }
     /**
      * 用户授权信息Cache
      */
@@ -49,15 +62,14 @@ public class ShiroConfig {
     public DefaultSecurityManager securityManager() {
         DefaultSecurityManager sm = new DefaultWebSecurityManager();
         sm.setCacheManager(cacheManager());
+        sm.setAuthenticator(new CustomizedModularRealmAuthenticator());
         return sm;
     }
-
     @Bean(name = "shiroFilter")
     @DependsOn("securityManager")
     @ConditionalOnMissingBean
-    public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultSecurityManager securityManager, Realm realm) {
-        securityManager.setRealm(realm);
-
+    public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultSecurityManager securityManager, Collection<Realm> realms) {
+        securityManager.setRealms(realms);
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
         shiroFilter.setLoginUrl("/admin/login");

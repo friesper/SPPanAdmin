@@ -41,9 +41,20 @@ public class SchoolController extends BaseController {
     IRelationOfSchoolAndNurseService schoolAndNurseService;
     @RequestMapping("/index")
     public String index(ModelMap modelMap){
+        User user=getUser();
+        Role role=user.getRoles().iterator().next();
+        if (role.getId()!=1){
+            School school=schoolService.find(role.getSchoolId());
+            List<School> schools=new ArrayList<>();
+            schools.add(school);
+            Page<School> page=new PageImpl<>(schools,getPageRequest(),schools.size());
+            modelMap.put("pageInfo", page);
+        }
+        else {
+            Page<School> page = schoolService.findAll(getPageRequest());
+            modelMap.put("pageInfo", page);
+        }
 
-        Page<School> page = schoolService.findAll(getPageRequest());
-        modelMap.put("pageInfo", page);
         return "admin/school/index";
     }
     @RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -59,20 +70,21 @@ public class SchoolController extends BaseController {
         List<SchoolGrantInfo> schoolGrantInfos=new ArrayList<>();
         SchoolGrantInfo schoolGrantInfo;
           list=  schoolAndNurseService.findBySchoolId(id);
-
             for (RelationOfSchoolAndNurse relationOfSchoolAndNurse:list){
                 schoolGrantInfo=new SchoolGrantInfo(relationOfSchoolAndNurse);
-                bus= iBusService.find(relationOfSchoolAndNurse.getBusId());
-                if (bus!=null) {
-                    schoolGrantInfo.setBusNumber(bus.getNumber());
+                if (relationOfSchoolAndNurse.getDriverId()!=null) {
+                    driver = driverService.find(relationOfSchoolAndNurse.getDriverId());
+                    if (driver != null) {
+                        schoolGrantInfo.setDriverName(driver.getName());
+                    }
                 }
-                driver=driverService.find(relationOfSchoolAndNurse.getDriverId());
+                if (relationOfSchoolAndNurse.getNurseId()!=null) {
+                    nurse = nurseService.find(relationOfSchoolAndNurse.getNurseId());
+                    if (nurse!=null) {
+                        schoolGrantInfo.setNurseName(nurse.getName());
+                    }
+                }
 
-                if (driver!=null){ schoolGrantInfo.setDriverName(driver.getName());}
-                nurse=nurseService.find(relationOfSchoolAndNurse.getNurseId());
-                if (nurse!=null) {
-                    schoolGrantInfo.setNurseName(nurse.getName());
-                }
                 schoolGrantInfos.add(schoolGrantInfo);
             }
             Page<SchoolGrantInfo> pageInfo=new PageImpl<>(schoolGrantInfos,getPageRequest(),schoolGrantInfos.size());
@@ -85,16 +97,10 @@ public class SchoolController extends BaseController {
     public  String grantEdit(@PathVariable Integer id,ModelMap map){
         RelationOfSchoolAndNurse relationOfSchoolAndNurse=  schoolAndNurseService.find(id);
         SchoolGrantInfo schoolGrantInfo=new SchoolGrantInfo(relationOfSchoolAndNurse);
-        Bus bus=iBusService.find(schoolGrantInfo.getBusId());
-        if (bus!=null){
-            schoolGrantInfo.setBusNumber(bus.getNumber());
-
-        }
         Nurse nurse=nurseService.find(schoolGrantInfo.getNurseId());
         if (nurse!=null){
             schoolGrantInfo.setNurseName(nurse.getName());
         }
-
         Driver driver=driverService.find(schoolGrantInfo.getDriverId());
     if (driver!=null){
         schoolGrantInfo.setDriverName(driver.getName());
@@ -156,13 +162,15 @@ public class SchoolController extends BaseController {
     }
     @RequestMapping(value = "/grant/add",method = RequestMethod.GET)
     public  String  grant_add(){
-
         return "admin/school/grant_form";
     }
     @RequestMapping(value = {"/grant/edit"}, method = RequestMethod.POST)
     @ResponseBody
     public JsonResult grantEdit( RelationOfSchoolAndNurse relationOfSchoolAndNurse, ModelMap map) {
         try {
+            if (relationOfSchoolAndNurse.getSchoolId()==null){
+                relationOfSchoolAndNurse.setSchoolId(getUser().getRoles().iterator().next().getSchoolId());
+            }
             logger.debug("dasdsa+++"+relationOfSchoolAndNurse.toString());
             schoolAndNurseService.saveOrUpdate(relationOfSchoolAndNurse);
         } catch (Exception e) {

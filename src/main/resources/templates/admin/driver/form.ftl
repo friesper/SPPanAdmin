@@ -20,14 +20,27 @@
                     for (var p in jsonstring) {//遍历json数组时，这么写p为索引，0,1
                         $("#workUnitId").append("<option value =" + jsonstring[p].id + ">" + jsonstring[p].name + "</option>");
                     }
-                    $("#workUnitId").val( ${driver.workUnitId});
+                    $("#workUnitId").val(${driver.workUnitId});
                     if (roleId !=1) {
                         $("#workUnitId").setAttribute("readonly","readonly");
-                        $("#workUnitId").val(schoolId);
+                        $("#workUnitId").val(driver.schoolId);
                     }
                 }
             });
-
+        $.ajax({   //2、发送给后端
+            url: "${ctx!}/admin/bus/busList",
+            type: "GET",
+            dataType: "JSON",  //返回的数据类型
+            success: function (ress) {
+                console.log("success");
+                var string = ress.data;
+                var jsonstring = jQuery.parseJSON(string);
+                for (var p in jsonstring) {//遍历json数组时，这么写p为索引，0,1
+                    $("#busId").append("<option value =" + jsonstring[p].id + ">" + jsonstring[p].number + "</option>");
+                }
+                $("#busId").val( ${driver.busId});
+            }
+        });
 
     }
 </script>
@@ -39,11 +52,21 @@
               }, function(){
               });
           }
+         else if($("#userName").val()==null||$("#userName").val()==""){
+              layer.msg("请输入用户名", {time: 2000
+              }, function(){
+              });
+          }
+          else if ($("#passWord").val()==null||$("#passWord").val()==""){
+              layer.msg("请输入密码", {time: 2000
+              }, function(){
+              });
+          }
 
         else {
               var formData = new FormData(document.getElementById("form"))
-              $("#driverImage")
               $("#workUnitName").val($("#workUnitId").find("option:selected").text());
+              $("#busNumber").val($("#busId").find("option:selected").text());
               $.ajax({
                   type: "POST",
                   dataType: "json",
@@ -70,7 +93,7 @@
     });
 </script>
 </#assign>
-<@layout title="用户编辑" active="driver">
+<@layout title=" 司机信息" active="driver">
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
@@ -91,8 +114,9 @@
             <div class="box  box-primary">
                 <form  id="form" class="form-horizontal form-edit" method="post" action="${ctx!}/admin/driver/edit"   enctype="multipart/form-data" target="uploadIframe">
                         <div class="box-body">
-                        <input type="hidden" id="id" name="id" value="${driver.id}">
-                        <input type="hidden" id="busId" name="busId" <#if driver.busId?exists> value="${driver.busId}" <#else >value=""</#if>>
+                            <input type="hidden" id="driverImage" name="driverImage" value="${driver.driverImage}">
+                            <input type="hidden" id="id" name="id" value="${driver.id}">
+                        <input type="hidden" id="busNumber" name="busNumber" <#if driver.busNumber?exists> value="${driver.busNumber}" <#else >value=""</#if>>
                         <input type="hidden" id="workUnitName" name="workUnitName"  <#if driver.workUnitName?exists>value="${driver.workUnitName}"<#else >value=""</#if>>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">姓名：</label>
@@ -100,6 +124,19 @@
                                 <input id="name" name="name" class="form-control" type="text" value="${driver.name}">
                             </div>
                         </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">用户名(登陆用)：</label>
+                                <div class="col-sm-10">
+                                    <input id="userName" name="userName" class="form-control" type="text" value="${driver.userName}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">密码：</label>
+                                <div class="col-sm-10">
+                                    <input id="passWord" name="passWord" class="form-control" type="text" value="${driver.passWord}">
+                                </div>
+                            </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">电话：</label>
                             <div class="col-sm-10">
@@ -110,7 +147,8 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">车辆号(车牌号)：</label>
                             <div class="col-sm-10">
-                                <input id="busNumber" name="busNumber" class="form-control" type="text" value="${driver.busNumber}">
+                                <select  id="busId" name="busId" class="form-control busId" <#if roleId!=1>readonly="readonly" </#if>     >
+                                </select>
                             </div>
                         </div>
                             <div class="form-group">

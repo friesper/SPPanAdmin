@@ -95,7 +95,7 @@
                     <td>${userInfo.workUnitName}</td>
 
                     <td>
-                    <@shiro.hasPermission name="system:driver:edit">
+                    <@shiro.hasPermission name="system:drivre:edit">
                         <a class="btn btn-sm btn-primary" href="${ctx!}/admin/driver/edit/${userInfo.id}">编辑</a>
                     </@shiro.hasPermission>
                     <@shiro.hasPermission name="system:driver:deleteBatch">

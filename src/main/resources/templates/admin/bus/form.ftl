@@ -47,7 +47,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">车牌号：</label>
                             <div class="col-sm-10">
-                                <input id="name" name="name" class="form-control" type="text" value="${bus.number}"  >
+                                <input id="number" name="number" class="form-control" type="text" value="${bus.number}"  >
                             </div>
                         </div>
                     <div class="box-footer">

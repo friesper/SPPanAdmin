@@ -7,6 +7,7 @@ import net.sppan.base.entity.Driver;
 import net.sppan.base.entity.RelationOfSchoolAndBus;
 import net.sppan.base.service.IBusService;
 import net.sppan.base.service.IRelationAndBusService;
+import net.sppan.base.service.IRelationOfSchoolAndNurseService;
 import net.sppan.base.service.support.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,13 +27,15 @@ public class BusServiceImpl extends BaseServiceImpl<Bus,Integer> implements IBus
     IRelationAndBusService relationAndBusService;
     @Autowired
     IBusDao busDao;
+    @Autowired
+    IRelationOfSchoolAndNurseService relationOfSchoolAndNurseService;
     @Override
     public IBaseDao<Bus, Integer> getBaseDao() {
         return busDao;
     }
 
     @Override
-    public void saveOrUpdate(Bus  bus) {
+    public void saveOrUpdate(Bus  bus,Integer schoolId) {
         if (bus.getId()!=null){
             Bus dbBus=find(bus.getId());
             dbBus.setNumber(bus.getNumber());
@@ -41,6 +44,8 @@ public class BusServiceImpl extends BaseServiceImpl<Bus,Integer> implements IBus
         else {
             save(bus);
             RelationOfSchoolAndBus relationOfSchoolAndBus=new RelationOfSchoolAndBus();
+            relationOfSchoolAndBus.setBusId(bus.getId());
+            relationOfSchoolAndBus.setSchoolId(schoolId);
             relationAndBusService.save(relationOfSchoolAndBus);
         }
 
@@ -54,8 +59,7 @@ public class BusServiceImpl extends BaseServiceImpl<Bus,Integer> implements IBus
 
     @Override
     public void delete(Integer id) {
-        Bus bus = find(id);
-        super.delete(id);
+        busDao.delete(id);
         relationAndBusService.deleteAllByBusid( id);
     }
 }

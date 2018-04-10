@@ -62,11 +62,14 @@ public class DriverController extends BaseController {
         else {
             HashSet<Integer> ids = new HashSet<Integer>();
             Set<Role> roles=user.getRoles();
+            logger.debug("dadwa             "+roles.iterator().next().getId());
             for (Role role:roles){
                 schoolId= role.getSchoolId();
-                List<RlationOFSD> list = iRlationOFSDService.findByDriverId(schoolId);
+                List<RlationOFSD> list = iRlationOFSDService.findBySchoolId(schoolId);
+                logger.debug("dadwssd           a"+list.size());
                 for (int i=0;i<list.size();i++) {
                     ids.add(list.get(i).getDriverId());
+                        logger.debug("dadwa"+list.get(i).toString());
                 }
             }
 
@@ -101,41 +104,43 @@ public class DriverController extends BaseController {
     @RequestMapping(value = "/edit",method = RequestMethod.POST)
     @ResponseBody
     public JsonResult edit( @RequestParam("driverImageFile") MultipartFile multipartFile, Driver driver, ModelMap map){
-            if (multipartFile!=null){
-                String rootPathDir = env.getProperty("upload.path");
-             if (driver.getDriverImage()!=null){
-                 File file=new File(rootPathDir+driver.getDriverImage());
-                 if (file.exists()){
-                     if (file.delete()){
-                         logger.debug("delete success");
-                     }else logger.debug("delete failed");
-                 }
-             }
-            }
         try {
-            String rootPathDir = env.getProperty("upload.path");
-            String fullPathDir = rootPathDir;
-            /**根据本地路径创建目录**/
-            File fullPathFile = new File(fullPathDir);
-            if (!fullPathFile.exists())
-                fullPathFile.mkdirs();
-            /** 获取文件的后缀* */
-            String suffix = multipartFile.getOriginalFilename().substring(
-                    multipartFile.getOriginalFilename().lastIndexOf("."));
-            String fileName = driver.getName()+driver.getId() + suffix;
-            String filePath =   rootPathDir+ fileName;
-            /** 文件输出流* */
-            File file = new File(filePath);
-            try (FileOutputStream fileOutputStream = new FileOutputStream(file);
-                 BufferedOutputStream stream = new BufferedOutputStream(fileOutputStream)) {
-                stream.write(multipartFile.getBytes());
-                stream.flush();
-                driver.setDriverImage(fileName);
-            } catch (Exception e) {
+            if (!multipartFile.isEmpty()) {
+                logger.debug("dsad"+multipartFile.getOriginalFilename());
+                String rootPathDir = env.getProperty("upload.path");
+                String fullPathDir = rootPathDir;
+                /**根据本地路径创建目录**/
+                File fullPathFile = new File(fullPathDir);
+                if (!fullPathFile.exists())
+                    fullPathFile.mkdirs();
+                /** 获取文件的后缀* */
+                String suffix = multipartFile.getOriginalFilename().substring(
+                        multipartFile.getOriginalFilename().lastIndexOf("."));
+                String fileName = driver.getName() + driver.getId() + suffix;
+                String filePath = rootPathDir + fileName;
+                if (driver.getDriverImage()!=null){
+                    File file=new File(rootPathDir+driver.getDriverImage());
+                    if (file.exists()){
+                        file.delete();
+                    }
+                }
+                /** 文件输出流* */
+                File file = new File(filePath);
+                try (FileOutputStream fileOutputStream = new FileOutputStream(file);
+                     BufferedOutputStream stream = new BufferedOutputStream(fileOutputStream)) {
+                    stream.write(multipartFile.getBytes());
+                    stream.flush();
+                    driver.setDriverImage(fileName);
+                } catch (Exception e) {
+                    return JsonResult.failure(e.getMessage());
+                }
+            }
+            else {
             }
             iDriverService.saveOrUpdate(driver);
+
         } catch (Exception e) {
-            return JsonResult.failure(e.getMessage());
+               throw e;
         }
         return JsonResult.success();
     }

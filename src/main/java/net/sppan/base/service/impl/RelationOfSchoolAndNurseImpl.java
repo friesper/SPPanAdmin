@@ -38,6 +38,11 @@ public class RelationOfSchoolAndNurseImpl extends BaseServiceImpl<RelationOfScho
     }
 
     @Override
+    public List<RelationOfSchoolAndNurse> findByNurseId(Integer id) {
+        return relationOfSchoolAndNurseDao.findByNurseId(id);
+    }
+
+    @Override
     public void saveOrUpdate(RelationOfSchoolAndNurse relationOfSchoolAndNurse) {
         logger.debug(relationOfSchoolAndNurse.toString());
         if (relationOfSchoolAndNurse.getId()!=null){
@@ -45,13 +50,29 @@ public class RelationOfSchoolAndNurseImpl extends BaseServiceImpl<RelationOfScho
             dbRelationOfSchoolAndNurse.setSchoolId(relationOfSchoolAndNurse.getSchoolId());
             dbRelationOfSchoolAndNurse.setNurseId(relationOfSchoolAndNurse.getNurseId());
             dbRelationOfSchoolAndNurse.setDriverId(relationOfSchoolAndNurse.getDriverId());
-            dbRelationOfSchoolAndNurse.setBusId(relationOfSchoolAndNurse.getBusId());
             update(dbRelationOfSchoolAndNurse);
         }
         else {
             save(relationOfSchoolAndNurse);
         }
     }
+
+    @Override
+    public void deleteAllBySchoolId(Integer id) {
+        relationOfSchoolAndNurseDao.deleteAllBySchoolId(id);
+    }
+
+    @Override
+    public void deleteAllByNurseId(Integer id) {
+        relationOfSchoolAndNurseDao.deleteAllByNurseId(id);
+
+    }
+
+    @Override
+    public void deleteAllByDriverId(Integer id) {
+        relationOfSchoolAndNurseDao.deleteAllByDriverId(id);
+    }
+
 
     @Override
     public List<RelationOfSchoolAndNurse> findNurseBySchoolId(Iterable<Integer> integers) {

@@ -12,6 +12,10 @@ public class Nurse extends BaseEntity {
     @Column(name = "id", nullable = false)
     private Integer id;
     private String name;
+    @Column(name = "user_name")
+    private String userName;
+    @Column(name = "pass_word")
+    private String passWord;
     private String phone;
     @Column(name = "work_unit_id")
     private Integer workUnitId;
@@ -31,6 +35,22 @@ public class Nurse extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassWord() {
+        return passWord;
+    }
+
+    public void setPassWord(String passWord) {
+        this.passWord = passWord;
     }
 
     public String getPhone() {
@@ -59,10 +79,14 @@ public class Nurse extends BaseEntity {
 
     @Override
     public String toString() {
-        return "nurse{" +
+        return "Nurse{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", userName='" + userName + '\'' +
+                ", passWord='" + passWord + '\'' +
                 ", phone='" + phone + '\'' +
+                ", workUnitId=" + workUnitId +
+                ", workUnitName='" + workUnitName + '\'' +
                 '}';
     }
 }

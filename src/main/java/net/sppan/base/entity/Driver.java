@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class Driver extends BaseEntity {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy  = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Integer id;
     private String name;
@@ -24,6 +24,10 @@ public class Driver extends BaseEntity {
     private Integer workUnitId;
     @Column(name = "work_unit_name")
     private String workUnitName;
+    @Column(name = "user_name")
+    private String userName;
+    @Column(name = "pass_word")
+    private String passWord;
     public Integer getId() {
         return id;
     }
@@ -38,6 +42,22 @@ public class Driver extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassWord() {
+        return passWord;
+    }
+
+    public void setPassWord(String passWord) {
+        this.passWord = passWord;
     }
 
     public String getPhone() {

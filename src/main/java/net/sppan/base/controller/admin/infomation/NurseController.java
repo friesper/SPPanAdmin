@@ -1,15 +1,13 @@
 package net.sppan.base.controller.admin.infomation;
 
 import com.alibaba.fastjson.JSONArray;
+import net.sppan.base.Application;
 import net.sppan.base.common.JsonResult;
 import net.sppan.base.controller.BaseController;
-import net.sppan.base.entity.Nurse;
-import net.sppan.base.entity.RelationOfSchoolAndNurse;
-import net.sppan.base.entity.Role;
-import net.sppan.base.entity.User;
-import net.sppan.base.service.IDriverService;
-import net.sppan.base.service.INurseService;
-import net.sppan.base.service.IRelationOfSchoolAndNurseService;
+import net.sppan.base.entity.*;
+import net.sppan.base.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
@@ -27,12 +25,20 @@ import java.util.Set;
 @Controller
 @RequestMapping("/admin/nurse")
 public class NurseController extends BaseController {
+    private static Logger logger = LoggerFactory.getLogger(Application.class);
+
     @Autowired
     private Environment env;
     @Autowired
     private INurseService nurseService;
     @Autowired
     IRelationOfSchoolAndNurseService relationOfSchoolAndNurseService;
+    @Autowired
+    IBusService busService;
+    @Autowired
+    IDriverService driverService;
+    @Autowired
+    IRelationOfSAService relationOfSAService;
     @RequestMapping("/index")
     public String index( ModelMap modelMap){
         int schoolId=0,roleId;
@@ -47,7 +53,7 @@ public class NurseController extends BaseController {
             Set<Role> roles=user.getRoles();
             for (Role role:roles){
                 schoolId= role.getSchoolId();
-                List<RelationOfSchoolAndNurse> list = relationOfSchoolAndNurseService.findNurseBySchoolId(schoolId);
+                List<RelationOfSA> list = relationOfSAService.findNurseBySchoolId(schoolId);
                 for (int i=0;i<list.size();i++) {
                     ids.add(list.get(i).getNurseId());
                 }
@@ -56,6 +62,22 @@ public class NurseController extends BaseController {
         }
         modelMap.put("pageInfo", page);
         return  "/admin/nurse/index";
+    }
+    @RequestMapping("/mobile/relationInfo/{id}")
+    @ResponseBody
+    public JsonResult mobileList(@PathVariable Integer id){
+        List<RelationOfSchoolAndNurse> list=relationOfSchoolAndNurseService.findByNurseId(id);
+        logger.debug("dsadasdas+            "+list.size());
+        JSONArray jsonArray=new JSONArray();
+        if (list.size()>0) {
+            RelationOfSchoolAndNurse relationOfSchoolAndNurse=list.get(0);
+            logger.debug(relationOfSchoolAndNurse.toString());
+            Driver driver=driverService.find(relationOfSchoolAndNurse.getDriverId());
+            if (driver!=null){
+                jsonArray.add(driver);
+            }
+        }
+        return JsonResult.success("",jsonArray.toString());
     }
     @RequestMapping(value = "/add",method = RequestMethod.GET)
     public String add(ModelMap modelMap){

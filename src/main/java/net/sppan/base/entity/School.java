@@ -18,10 +18,6 @@ public class School extends BaseEntity {
     @Column(name = "id", nullable = false)
     private Integer id;
     private String name;
-    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JoinTable(name = "tb_school_driver", joinColumns = {@JoinColumn(name = "school_id")}, inverseJoinColumns = {@JoinColumn(name = "driver_id")})
-    private java.util.Set<Driver> drivers;
-
 
     public Integer getId() {
         return id;
@@ -39,11 +35,5 @@ public class School extends BaseEntity {
         this.name = name;
     }
 
-    public Set<Driver> getDrivers() {
-        return drivers;
-    }
 
-    public void setDrivers(Set<Driver> drivers) {
-        this.drivers = drivers;
-    }
 }

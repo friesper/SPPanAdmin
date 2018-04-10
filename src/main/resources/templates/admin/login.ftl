@@ -30,7 +30,7 @@
 <body class="hold-transition login-page">
 <div class="login-box" id="app">
     <div class="login-logo">
-        <a href="../../index2.html"><b>SPPanAdmin</b></a>
+        <a href="../../index2.html"><b>慧通物联</b></a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">

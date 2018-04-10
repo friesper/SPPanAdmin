@@ -18,8 +18,6 @@ public class RelationOfSchoolAndNurse extends BaseEntity {
     private  Integer nurseId;
     @Column(name = "driver_id")
     private Integer driverId;
-    @Column(name = "bus_id")
-    private  Integer busId;
 
     public Integer getId() {
         return id;
@@ -53,13 +51,7 @@ public class RelationOfSchoolAndNurse extends BaseEntity {
         this.driverId = driverId;
     }
 
-    public Integer getBusId() {
-        return busId;
-    }
 
-    public void setBusId(Integer busId) {
-        this.busId = busId;
-    }
 
     @Override
     public String toString() {
@@ -68,7 +60,6 @@ public class RelationOfSchoolAndNurse extends BaseEntity {
                 ", schoolId=" + schoolId +
                 ", nurseId=" + nurseId +
                 ", driverId=" + driverId +
-                ", busId=" + busId +
                 '}';
     }
 }

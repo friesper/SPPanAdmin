@@ -16,4 +16,6 @@ public interface INurseDao extends IBaseDao<Nurse,Integer> {
     @Override
     List<Nurse> findAll(Iterable<Integer> iterable);
     List<Nurse>  findByWorkUnitId(Integer id);
+
+    Nurse  findNurseByUserName(String name);
 }

@@ -16,4 +16,7 @@ public interface IDriverDao extends IBaseDao<Driver,Integer> {
 
     @Override
     List<Driver> findAll(Iterable<Integer> iterable);
+
+    Driver findDriverByName(String name);
+    Driver findDriverByUserName(String name);
 }

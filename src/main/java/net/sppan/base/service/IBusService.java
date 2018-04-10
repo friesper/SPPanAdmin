@@ -8,7 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 public interface IBusService extends IBaseService<Bus,Integer> {
-    void saveOrUpdate(Bus bus);
+    void saveOrUpdate(Bus bus,Integer schoolId);
 
     @Override
     Page<Bus> findAll(Pageable pageable);

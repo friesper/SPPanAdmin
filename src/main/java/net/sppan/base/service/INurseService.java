@@ -12,4 +12,5 @@ public interface INurseService extends IBaseService<Nurse,Integer> {
     public void saveOrUpdate(Nurse nurse) ;
     public Page<Nurse> findById(HashSet<Integer> ids, PageRequest pageRequest) ;
     List<Nurse> findBySchoolId(Integer id);
+    Nurse  findNurseByUserName(String name);
 }
