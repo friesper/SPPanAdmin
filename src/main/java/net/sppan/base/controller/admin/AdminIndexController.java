@@ -28,7 +28,6 @@ public class AdminIndexController extends BaseController {
 
     @RequestMapping(value = {"/admin/", "/admin/index"})
     public String index() {
-
         return "admin/index";
     }
     @RequestMapping(method = RequestMethod.GET, value = "/{filename:.+}")
