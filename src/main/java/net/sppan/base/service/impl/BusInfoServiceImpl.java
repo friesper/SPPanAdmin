@@ -26,6 +26,12 @@ public class BusInfoServiceImpl extends BaseServiceImpl<BusInfo,Integer> impleme
     public List<BusInfo> findAllByBusIdAndCreateTime(Integer id, Date date) {
         return iBusInfoDao.findAllByBusIdAndCreateTime(id,date);
     }
+
+    @Override
+    public List<BusInfo> findAllByBusIdAndCreateTimeBetween(Integer id, Date startDate, Date endDate) {
+        return iBusInfoDao.findAllByBusIdAndCreateTimeBetween(id,startDate,endDate);
+    }
+
     public void saveOrUpdate(BusInfo  busInfo) {
         if (busInfo.getId()!=null){
             BusInfo dbBusInfo=find(busInfo.getId());

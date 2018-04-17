@@ -10,4 +10,6 @@ import java.util.List;
 public interface IBusInfoService extends IBaseService<BusInfo,Integer> {
 
     List<BusInfo> findAllByBusIdAndCreateTime(Integer id, Date date);
+    List<BusInfo>  findAllByBusIdAndCreateTimeBetween(Integer id,Date startDate,Date endDate);
+
 }

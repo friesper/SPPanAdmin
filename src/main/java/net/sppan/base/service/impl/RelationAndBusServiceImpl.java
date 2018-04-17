@@ -21,7 +21,7 @@ public class RelationAndBusServiceImpl extends BaseServiceImpl<RelationOfSchoolA
     }
     @Override
     public List<RelationOfSchoolAndBus> findBySchoolId(Integer id){
-        return relationAndBusDao.findBySchoolId(id);
+        return relationAndBusDao.findAllBySchoolId(id);
 
     }
 

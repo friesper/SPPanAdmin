@@ -66,6 +66,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements I
             user.setCreateTime(new Date());
             user.setUpdateTime(new Date());
             user.setDeleteStatus(0);
+            user.setAvatar("https://gitee.com/uploads/78/559378_whoismy8023.png?1482721399");
             user.setPassword(MD5Utils.md5("111111"));
             save(user);
         }

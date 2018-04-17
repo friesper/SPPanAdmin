@@ -5,7 +5,10 @@
 </style>
 </#assign>
 <#assign js>
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
+<script src="/static/assets/plugins/jquery/jquery.js"></script>
+<script src="/static/assets/plugins/jQueryUI/jquery-ui.js"></script>
 <script>
     window.onload=function() {
         console.log("onload");
@@ -32,6 +35,12 @@
         _this.src="/admin/image/default";
         _this.onerror=null;
     }
+</script>
+<script>
+    $(function() {
+        $("#createTime").datepicker();
+        $( "#createTime" ).datepicker( "option", "dateFormat", "yy-mm-dd");
+    });
 </script>
 <script>
     $("#find").click(function () {
@@ -64,7 +73,7 @@
     }
 </script>
 </#assign>
-<@layout title="校车每日检查" active="businfo">
+<@layout title="校车每日检查" active="busInfo">
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
@@ -86,7 +95,7 @@
             <a class="btn btn-sm btn-success" href="${ctx!}/admin/add">新增</a>
         </@shiro.hasPermission>-->
         </div>
-        <div class="box-body">info
+        <div class="box-body">
             <table class="table table-striped">
                 <tr>
                     <th>ID</th>
@@ -99,7 +108,7 @@
                     <td>
                         <select id="busId" name="busId" class="form-control busId" >
                         </select></td>
-                    <td> <input id="createTime" name="createTime" class="form-control" type="date" value="">
+                    <td> <input id="createTime" name="createTime" class="form-control "  value="">
                     </td>
                     <td>
                     <@shiro.hasPermission name="system:info:edit">

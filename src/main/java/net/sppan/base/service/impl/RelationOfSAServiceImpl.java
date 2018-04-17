@@ -34,7 +34,7 @@ public class RelationOfSAServiceImpl extends BaseServiceImpl <RelationOfSA, Inte
 
     @Override
     public List<RelationOfSA> findNurseBySchoolId(Integer id) {
-        return relationOfSADao.findAll();
+        return relationOfSADao.findBySchoolId(id);
     }
 
     @Override

@@ -14,5 +14,6 @@ public interface IStudentStatusService extends IBaseService<StudentStatus,Intege
     List<StudentStatus> findAllByBusIdAndTakeTime(Integer id, Date Date);
 
     public void saveOrUpdate(StudentStatus studentStatus);
+    List<StudentStatus> findByBusIdBetweenDate(Integer id,Date startDate,Date endDate);
 
 }

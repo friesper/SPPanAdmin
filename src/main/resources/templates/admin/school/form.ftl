@@ -40,13 +40,13 @@
         <div class="col-md-10">
             <!-- Default box -->
             <div class="box  box-primary">
-                <form class="form-horizontal form-edit" method="post" action="${ctx!}/admin/school/edit">
+                <form class="form-horizontal form-edit" >
                     <div class="box-body">
                         <input type="hidden" id="id" name="id" value="${school.id}">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">名称：</label>
-                            <div class="col-sm-10">
-                                <input id="name" name="name" class="form-control" type="text" value="${school.name}"  >
+                            <div class="col-sm-8">
+                                <input id="name" name="name" class="form-control " type="text" value="${school.name}"  >
                             </div>
                         </div>
                     </div>

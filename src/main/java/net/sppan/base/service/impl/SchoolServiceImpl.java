@@ -33,7 +33,14 @@ public class SchoolServiceImpl extends BaseServiceImpl<School,Integer> implement
     IRlationOFSDService rlationOFSDService;
     @Override
     public void saveOrUpdate(School school) {
-
+        if (school.getId()!=null){
+            School dbSchool=find(school.getId());
+            dbSchool.setName(school.getName());
+            update(dbSchool);
+        }
+        else {
+            save(school);
+        }
     }
 
     @Override

@@ -58,6 +58,17 @@ public class BusController extends BaseController {
 
         return "admin/bus/form";
     }
+    @RequestMapping(value = "/delete/{id}",method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult delete(@PathVariable Integer id){
+        try {
+            busService.delete(id);
+            relationAndBusService.deleteAllByBusid(id);
+        }catch (Exception e) {
+            return JsonResult.failure(e.getMessage());
+        }
+        return JsonResult.success();
+    }
     @RequestMapping(value = "/edit/{id}",method = RequestMethod.GET)
     public String edit(@PathVariable Integer id,ModelMap modelMap){
         Bus bus=busService.find(id);
@@ -70,9 +81,15 @@ public class BusController extends BaseController {
     public JsonResult edit(Bus bus){
 
         try {
+            if (getUser().getRoles().iterator().next().getId()==1){
+                throw new Exception( "超级管理员不能添加车辆信息");
+            }
+            else
+            {
             Integer schoolId=0;
             schoolId=getUser().getRoles().iterator().next().getSchoolId();
             busService.saveOrUpdate(bus,schoolId);
+            }
         } catch (Exception e) {
             return JsonResult.failure(e.getMessage());
         }
@@ -112,7 +129,7 @@ public class BusController extends BaseController {
             list=busService.findAll();
         }
         else {
-         List<RelationOfSchoolAndBus>  list1=  iRelationAndBusDao.findBySchoolId(role.getSchoolId());
+         List<RelationOfSchoolAndBus>  list1=  iRelationAndBusDao.findAllBySchoolId(role.getSchoolId());
          list=new ArrayList<Bus>();
          for (RelationOfSchoolAndBus relationOfSchoolAndBus:list1){
                 list.add(busService.find(relationOfSchoolAndBus.getBusId()));

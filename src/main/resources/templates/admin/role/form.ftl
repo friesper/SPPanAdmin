@@ -61,7 +61,7 @@
         <div class="col-md-10">
             <!-- Default box -->
             <div class="box  box-primary">
-                <form class="form-horizontal form-edit" id="frm" method="post" action="${ctx!}/admin/role/edit" onload="load()">
+                <form class="form-horizontal form-edit" id="frm"  onload="load()">
                     <div class="box-body">
                         <input type="hidden" id="id" name="id" value="${role.id}">
                         <div class="form-group">

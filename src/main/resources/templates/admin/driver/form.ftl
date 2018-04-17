@@ -112,7 +112,7 @@
         <div class="col-md-10">
             <!-- Default box -->
             <div class="box  box-primary">
-                <form  id="form" class="form-horizontal form-edit" method="post" action="${ctx!}/admin/driver/edit"   enctype="multipart/form-data" target="uploadIframe">
+                <form  id="form" class="form-horizontal form-edit"   enctype="multipart/form-data" target="uploadIframe">
                         <div class="box-body">
                             <input type="hidden" id="driverImage" name="driverImage" value="${driver.driverImage}">
                             <input type="hidden" id="id" name="id" value="${driver.id}">
@@ -151,7 +151,7 @@
                                 </select>
                             </div>
                         </div>
-                            <div class="form-group">
+                            <div class="form-group" hidden="hidden">
                                 <label class="col-sm-2 control-label">工作单位：</label>
                                 <div class="col-sm-10">
                                     <select  id="workUnitId" name="workUnitId" class="form-control workUnitId" <#if roleId!=1>readonly="readonly" </#if>     >

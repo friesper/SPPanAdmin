@@ -30,4 +30,9 @@ public class StudentStatusServiceImpl extends BaseServiceImpl<StudentStatus,Inte
     public void saveOrUpdate(StudentStatus studentStatus) {
             studentStatusDao.save(studentStatus);
     }
+
+    @Override
+    public List<StudentStatus> findByBusIdBetweenDate(Integer id, Date startDate, Date endDate) {
+        return studentStatusDao.findAllByBusIdAndTakeTimeBetween(id,startDate,endDate);
+    }
 }

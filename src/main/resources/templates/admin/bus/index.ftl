@@ -11,7 +11,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: "${ctx!}/admin/school/delete/" + id,
+                url: "${ctx!}/admin/bus/delete/" + id,
                 success: function (res) {
                     layer.msg(res.message, {time: 2000}, function () {
                         location.reload();
@@ -61,7 +61,7 @@
                     <#--<@shiro.hasPermission name="system:school:grant">
                         <a class="btn btn-sm btn-warning" href="${ctx!}/admin/school/grant/${schoolInfo.id}">分配</a>
                     </@shiro.hasPermission>-->
-                    <@shiro.hasPermission name="system:school:deleteBatch">
+                    <@shiro.hasPermission name="system:bus:deleteBatch">
                         <button class="btn btn-sm btn-danger" onclick="del(${busInfo.id})">删除</button>
                     </@shiro.hasPermission>
                     </td>

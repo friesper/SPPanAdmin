@@ -20,4 +20,5 @@ public interface IBusInfoDao extends IBaseDao<BusInfo,Integer> {
     @Override
     List<BusInfo> findAll(Specification<BusInfo> specification);
     List<BusInfo> findAllByBusIdAndCreateTime(Integer id, Date date);
+    List<BusInfo>  findAllByBusIdAndCreateTimeBetweenOrderByCreateTime(Integer id,Date startDate,Date endDate);
 }

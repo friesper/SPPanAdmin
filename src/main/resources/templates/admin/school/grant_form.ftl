@@ -76,7 +76,7 @@
         <div class="col-md-10">
             <!-- Default box -->
             <div class="box  box-primary">
-                <form class="form-horizontal form-edit" id="frm" method="post" action="${ctx!}/admin/grant/edit" onload="load()">
+                <form class="form-horizontal form-edit" id="frm"  onload="load()">
                     <div class="box-body">
                         <input type="hidden" id="id" name="id" value="${pageInfo.id}">
                         <input type="hidden" id="schoolId" name="schoolId" value="${pageInfo.schoolId}">

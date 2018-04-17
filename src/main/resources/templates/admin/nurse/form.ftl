@@ -91,7 +91,7 @@
         <div class="col-md-10">
             <!-- Default box -->
             <div class="box  box-primary">
-                <form  id="form" class="form-horizontal form-edit" method="post" action="${ctx!}/admin/nurse/edit"   target="uploadIframe">
+                <form  id="form" class="form-horizontal form-edit"    target="uploadIframe">
                         <div class="box-body">
                         <input type="hidden" id="id" name="id" value="${nurse.id}">
                         <input type="hidden" id="workUnitName" name="workUnitName"  <#if nurse.workUnitName?exists>value="${nurse.workUnitName}"<#else >value=""</#if>>
@@ -120,7 +120,7 @@
                             </div>
                         </div>
 
-                            <div class="form-group">
+                            <div class="form-group" hidden="hidden">
                                 <label class="col-sm-2 control-label">工作单位：</label>
                                 <div class="col-sm-10">
                                     <select  id="workUnitId" name="workUnitId" class="form-control workUnitId" <#if roleId!=1>readonly="readonly" </#if>     >

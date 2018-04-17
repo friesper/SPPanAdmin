@@ -150,14 +150,23 @@ public class SchoolController extends BaseController {
     @RequestMapping(value = "/schoolList",method = RequestMethod.GET)
     @ResponseBody
     public JsonResult schoolList(){
+        User user=getUser();
+        Role role=user.getRoles().iterator().next();
+        List<School> list;
+        if (role.getId()!=1){
+            School school=schoolService.find(role.getSchoolId());
+             list=new ArrayList<>();
+            list.add(school);
+        }
+        else {
+            list=schoolService.findAll();
+        }
 
-        List<School> list= schoolService.findAll();
-        JSONObject jsonObject=new JSONObject();
         JSONArray jsonArray=new JSONArray();
         for (int i = 0; i <list.size() ; i++) {
             jsonArray.add(i,list.get(i));
-
         }
+
         return JsonResult.success("",jsonArray.toString());
     }
     @RequestMapping(value = "/grant/add",method = RequestMethod.GET)
@@ -169,7 +178,8 @@ public class SchoolController extends BaseController {
     public JsonResult grantEdit( RelationOfSchoolAndNurse relationOfSchoolAndNurse, ModelMap map) {
         try {
             if (relationOfSchoolAndNurse.getSchoolId()==null){
-                relationOfSchoolAndNurse.setSchoolId(getUser().getRoles().iterator().next().getSchoolId());
+                Nurse nurse=nurseService.find(relationOfSchoolAndNurse.getNurseId());
+                relationOfSchoolAndNurse.setSchoolId(nurse.getWorkUnitId());
             }
             logger.debug("dasdsa+++"+relationOfSchoolAndNurse.toString());
             schoolAndNurseService.saveOrUpdate(relationOfSchoolAndNurse);

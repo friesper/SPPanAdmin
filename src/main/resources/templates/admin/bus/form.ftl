@@ -40,7 +40,7 @@
         <div class="col-md-10">
             <!-- Default box -->
             <div class="box  box-primary">
-                <form class="form-horizontal form-edit" method="post" action="${ctx!}/admin/bus/edit">
+                <form class="form-horizontal form-edit" >
                     <div class="box-body">
                             <div class="col-sm-10">
                                 <input type="hidden" id="id" name="id" value="${bus.id}">

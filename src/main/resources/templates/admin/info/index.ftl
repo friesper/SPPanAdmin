@@ -1,11 +1,15 @@
 <#include "/admin/layout/layout.ftl">
 <#import "/admin/layout/macro.ftl" as macro>
+
 <#assign css>
 <style>
 </style>
 </#assign>
 <#assign js>
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
+<script src="/static/assets/plugins/jquery/jquery.js"></script>
+<script src="/static/assets/plugins/jQueryUI/jquery-ui.js"></script>
 <script>
     window.onload=function() {
         console.log("onload");
@@ -28,10 +32,10 @@
 
 </script>
 <script>
-    function nofind(_this){
-        _this.src="/admin/image/default";
-        _this.onerror=null;
-    }
+    $(function() {
+        $("#takeTime").datepicker();
+        $( "#takeTime" ).datepicker( "option", "dateFormat", "yy-mm-dd");
+    });
 </script>
 <script>
     $("#find").click(function () {
@@ -47,24 +51,13 @@
     });
 </script>
 <script>
-    function del(id){
-        console.log("id"+id)
-        layer.confirm('确定删除吗?', {icon: 3, title:'提示'}, function(index){
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: "${ctx!}/admin/info/student/delete/" + id,
-                success: function(res){
-                    layer.msg(res.message, {time: 2000}, function () {
-                        location.reload();
-                    });
-                }
-            });
-        });
-    }
+    $("#export").click(function () {
+        window.open("/admin/info/status/info/getExcel/" + $("#busId").val());
+    });
+
 </script>
 </#assign>
-<@layout title="接送学生信息" active="busInfo">
+<@layout title="接送学生信息" active="info">
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
@@ -82,30 +75,31 @@
 <section class="content">
     <!-- Default box -->
     <div class="box box-primary">
-        <div class="box-header">
-        <@shiro.hasPermission name="system:nurse:add">
-            <a class="btn btn-sm btn-success" href="${ctx!}/admin//add">新增</a>
-        </@shiro.hasPermission>
-        </div>
-        <div class="box-body">info
+        <div class="box-body">
             <table class="table table-striped">
                 <tr>
-                    <th>ID</th>
                     <th>车牌号</th>
                     <th>时间</th>
                     <th>操作</th>
                 </tr>
                 <tr>
-                    <td>${userInfo.id}</td>
                     <td>
                         <select id="busId" name="busId" class="form-control busId" >
                         </select></td>
-                    <td> <input id="takeTime" name="takeTime" class="form-control" type="date" value="">
+                    <td>
+                        <input id="takeTime" name="takeTime" class="form-control"  value="">
                     </td>
                     <td>
                     <@shiro.hasPermission name="system:info:edit">
                         <a class="btn btn-sm btn-primary"  id="find"  >查找</a>
                     </@shiro.hasPermission>
+                         <@shiro.hasPermission name="system:info:edit">
+                        <a class="btn btn-sm btn-primary export"  id="export"  >导出</a>
+                         </@shiro.hasPermission>
+                        <form action='ajax_url' hidden="hidden">
+                        <input type="text" name="export" value="export">
+                        <input type="submit" value="提交">
+                        </form>
                     </td>
                 </tr>
             </table>

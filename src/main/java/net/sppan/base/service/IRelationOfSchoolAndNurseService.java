@@ -13,10 +13,9 @@ public interface IRelationOfSchoolAndNurseService extends IBaseService<RelationO
     List<RelationOfSchoolAndNurse> findNurseBySchoolId(Integer id);
     List<RelationOfSchoolAndNurse> findBySchoolId(Integer id);
     List<RelationOfSchoolAndNurse> findByNurseId(Integer id);
-
     void saveOrUpdate(RelationOfSchoolAndNurse relationOfSchoolAndNurse);
-
     void  deleteAllBySchoolId(Integer id);
     void  deleteAllByNurseId(Integer id);
     void deleteAllByDriverId(Integer id);
+
 }

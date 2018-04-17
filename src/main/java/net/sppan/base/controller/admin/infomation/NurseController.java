@@ -41,24 +41,23 @@ public class NurseController extends BaseController {
     IRelationOfSAService relationOfSAService;
     @RequestMapping("/index")
     public String index( ModelMap modelMap){
-        int schoolId=0,roleId;
         Page<Nurse > page;
         User user=getUser();
-        roleId=user.getRoles().iterator().next().getId();
-        if (roleId==1){
-            page=nurseService.findAll(getPageRequest());
-        }
-        else {
+        Role role=user.getRoles().iterator().next();
+        if (role.getId()!=1){
             HashSet<Integer> ids = new HashSet<Integer>();
-            Set<Role> roles=user.getRoles();
-            for (Role role:roles){
-                schoolId= role.getSchoolId();
-                List<RelationOfSA> list = relationOfSAService.findNurseBySchoolId(schoolId);
+                List<RelationOfSA> list = relationOfSAService.findNurseBySchoolId(role.getSchoolId());
                 for (int i=0;i<list.size();i++) {
                     ids.add(list.get(i).getNurseId());
+                    logger.debug("asdwahdwa nurseId"+list.get(i).getNurseId());
                 }
-            }
+                logger.debug("asdwahdwa schoolId"+role.getSchoolId()+"nurse+++");
             page = nurseService.findById(ids, getPageRequest());
+            }
+
+        else {
+            page=nurseService.findAll(getPageRequest());
+
         }
         modelMap.put("pageInfo", page);
         return  "/admin/nurse/index";

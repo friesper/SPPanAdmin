@@ -2,6 +2,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>SPPanAdmin - ${title!}</title>
@@ -31,7 +33,6 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
     <script>
-
     </script>
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
@@ -154,7 +155,7 @@
                 <li <#if active=="info">class="active"</#if>><a href="${ctx!}/admin/info/index"><i class="fa fa-user"></i> 校车接送信息</a></li>
             </@shiro.hasPermission>
                   <@shiro.hasPermission name="system:info:index">
-                <li <#if active=="businfo">class="active"</#if>><a href="${ctx!}/admin/info/bus/index"><i class="fa fa-user"></i> 校车检测信息</a></li>
+                <li <#if active=="busInfo">class="active"</#if>><a href="${ctx!}/admin/info/bus/index"><i class="fa fa-user"></i> 校车检测信息</a></li>
                   </@shiro.hasPermission>
                   <@shiro.hasPermission name="system:school:index">
                 <li <#if active=="school">class="active"</#if>><a href="${ctx!}/admin/school/index"><i class="fa fa-university"></i> 学校信息</a></li>
