@@ -3,6 +3,7 @@ package net.sppan.base.controller.admin;
 import com.alibaba.fastjson.JSONArray;
 import net.sppan.base.Application;
 import net.sppan.base.common.JsonResult;
+import net.sppan.base.common.utils.ExportBusExcel;
 import net.sppan.base.common.utils.ExportExcel;
 import net.sppan.base.controller.BaseController;
 import net.sppan.base.entity.*;
@@ -31,9 +32,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Controller
 @RequestMapping("/admin/info")
@@ -50,9 +54,8 @@ public class infoController extends BaseController {
     IRelationAndBusService relationAndBusService;
     @Autowired
     IBusService busService;
-    ExportExcel exportExcel;
     public  infoController(){
-        exportExcel=new ExportExcel();
+
     }
     @RequestMapping("/index")
     public String  index(){
@@ -193,48 +196,41 @@ public class infoController extends BaseController {
     }
     @RequestMapping(value = "/status/info/getExcel" ,method = RequestMethod.GET)
     @ResponseBody
-    public void getExcele(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void getExcele( HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ExportExcel exportExcel;
        int roleId=getUser().getRoles().iterator().next().getId();
-       if (roleId!=1) {
+        ArrayList<String> createFilesPath=new ArrayList<String>();
            response.setCharacterEncoding(request.getCharacterEncoding());
            response.setContentType("application/octet-stream");
-           String filename;
            Date date = new Date();
            Calendar cal = Calendar.getInstance();
            cal.setTime(date);
            int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
            cal.add(Calendar.DATE, -w);
            Date startdate = cal.getTime();
-           List<StudentStatus> list = studentStatusService.findByBusIdBetweenDate(id, startdate, date);
+           List<StudentStatus> list;
+        if (roleId!=1) {
+            List<RelationOfSchoolAndBus> relationOfSchoolAndBuses = relationAndBusService.findBySchoolId(getUser().getRoles().iterator().next().getSchoolId());
+            for (RelationOfSchoolAndBus r : relationOfSchoolAndBuses) {
+                exportExcel=new ExportExcel();
+                list = studentStatusService.findByBusIdBetweenDate(r.getBusId(), startdate, date);
+                createFilesPath.add(exportExcel.createStudentstatusExcel(list));
 
-           filename = exportExcel.createStudentstatusExcel(list);
-           String filePath = env.getProperty("download.path") + filename;
-           FileInputStream fis = null;
+            }
+        }
+        else {
+            List<Bus> list1=busService.findAll();
+            for (Bus b:list1){
+                exportExcel=new ExportExcel();
+                list = studentStatusService.findByBusIdBetweenDate(b.getId(), startdate, date);
+                createFilesPath.add(exportExcel.createStudentstatusExcel(list));
+            }
+
+        }
+        exportZip("校车接送记录.zip",response, createFilesPath);
            // FileSystemResource file = new FileSystemResource(filePath);
-           try {
-               File file = new File(filePath);
-               fis = new FileInputStream(file);
-               String enableFileName = "=?UTF-8?B?" + (new String(Base64.encodeBase64(filename.getBytes("UTF-8")))) + "?=";
-               response.setHeader("Content-Disposition", "attachment; filename=" + enableFileName);
-               IOUtils.copy(fis, response.getOutputStream());
-               response.flushBuffer();
-           } catch (FileNotFoundException e) {
-               e.printStackTrace();
-           } catch (IOException e) {
-               e.printStackTrace();
-           } finally {
-               if (fis != null) {
-                   try {
-                       fis.close();
-                   } catch (IOException e) {
-                       e.printStackTrace();
-                   }
-               }
-           }
-       }
-       else {
 
-       }
+
         /*HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getFilename()));
@@ -246,18 +242,80 @@ public class infoController extends BaseController {
 
 
     }
+
+    private void exportZip(String name,HttpServletResponse response, ArrayList<String> createFilesPath) {
+        byte[] buffer = new byte[1024];
+        String zipPath=env.getProperty("zipPath");
+        String zipName=name;
+        String strZipPath=zipPath+"/"+zipName;
+        try {
+            File tmpZip=new File(zipPath);
+            if (!tmpZip.exists())
+                tmpZip.mkdirs();
+            File tmpZipFile = new File(strZipPath);
+            if (!tmpZipFile.exists())
+                tmpZipFile.createNewFile();
+
+            ZipOutputStream out = new ZipOutputStream(new FileOutputStream(strZipPath));
+            // 需要同时下载的两个文件result.txt ，source.txt
+
+            File[] file1 =new File[createFilesPath.size()] ;
+
+            for(int i=0;i<createFilesPath.size();i++){
+                file1[i]=new File(createFilesPath.get(i));
+            }
+            for (int i = 0; i < file1.length; i++) {
+                FileInputStream fiss = new FileInputStream(file1[i]);
+                out.putNextEntry(new ZipEntry(file1[i].getName()));
+                //设置压缩文件内的字符编码，不然会变成乱码
+                int len;
+                // 读入需要下载的文件的内容，打包到zip文件
+                while ((len = fiss.read(buffer)) > 0) {
+                    out.write(buffer, 0, len);
+                }
+                out.closeEntry();
+                fiss.close();
+            }
+            out.close();
+            this.downloadFile(zipPath,zipName,response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @RequestMapping(value = "/status/info/getBusInfoExcel" ,method = RequestMethod.GET)
     @ResponseBody
     public void getbusExcele( HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ExportBusExcel exportExcel;
         response.setCharacterEncoding(request.getCharacterEncoding());
         response.setContentType("application/octet-stream");
+        ArrayList<String> createFilesPath=new ArrayList<String>();
         String  filename;
         Date date=new Date();
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.DAY_OF_MONTH,1);
         Date startdate=cal.getTime();
         Bus bus;
-        exportExcel.createBusInfoExcel();
+        int id=getUser().getRoles().iterator().next().getId();
+        List<BusInfo> list;
+        if (id==1){
+            List<Bus> list1=busService.findAll();
+            for (Bus bus1:list1){
+                exportExcel=new ExportBusExcel();
+                list=busInfoService.findAllByBusIdAndCreateTimeBetween(bus1.getId(),startdate,date);
+                createFilesPath.add(exportExcel.createBusInfoExcel(list));
+            }
+        }
+        else {
+            List<RelationOfSchoolAndBus> relationOfSchoolAndBuses=relationAndBusService.findBySchoolId(getUser().getRoles().iterator().next().getSchoolId());
+            for (RelationOfSchoolAndBus r:relationOfSchoolAndBuses){
+                exportExcel=new ExportBusExcel();
+                createFilesPath.add(exportExcel.createBusInfoExcel(busInfoService.findAllByBusIdAndCreateTimeBetween(r.getBusId(),startdate,date)));
+            }
+
+        }
+        exportZip("校车例检.zip",response, createFilesPath);
+
         /*List<RelationOfSchoolAndBus> relationOfSchoolAndBuses=relationAndBusService.findBySchoolId(getUser().getRoles().iterator().next().getSchoolId());
         for ( RelationOfSchoolAndBus  a:relationOfSchoolAndBuses){
              bus=busService.find(a.getBusId());
@@ -266,4 +324,37 @@ public class infoController extends BaseController {
 
 
     }
+    public void downloadFile(String filePath,String fileName,HttpServletResponse response){
+
+        response.setCharacterEncoding("utf-8");
+        // response.setContentType("application/octet-stream");
+
+        try {
+            File file=new File(filePath,fileName);
+            // 以流的形式下载文件。
+            BufferedInputStream fis = new BufferedInputStream(new FileInputStream(file.getPath()));
+            byte[] buffer = new byte[fis.available()];
+            fis.read(buffer);
+            fis.close();
+            // 清空response
+            response.reset();
+            String agent = request.getHeader("USER-AGENT");
+            if(agent != null && agent.indexOf("MSIE") == -1) {// FF
+                String enableFileName = "=?UTF-8?B?" + (new String(Base64.encodeBase64(fileName.getBytes("UTF-8")))) + "?=";
+                response.setHeader("Content-Disposition", "attachment; filename=" + enableFileName);
+            } else { // IE
+                String enableFileName = new String(fileName.getBytes("GBK"), "ISO-8859-1");
+                response.setHeader("Content-Disposition", "attachment; filename=" + enableFileName);
+            }
+            OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
+            response.setContentType("application/octet-stream");
+            toClient.write(buffer);
+            toClient.flush();
+            toClient.close();
+
+        }
+        catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
+}

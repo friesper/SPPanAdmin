@@ -24,15 +24,23 @@ public class ExportExcel {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(Application.class);
     HSSFCellStyle a_cellStyle;
     Workbook workbook;
+    Calendar calendar;
+    Sheet sheet;
     public String createStudentstatusExcel(List<StudentStatus> arrayList) throws IOException{
         /**
          * 插入数据从第六行开始  index=5;
          *
          * */
 
-         workbook = initFile();
+         workbook = initFile(sheet);
+         String filename;
+         if (arrayList.size()>0){
+              filename="校车接送记录"+arrayList.get(0).getBusNumber()+".xls";
+         }
+         else {
+              filename = "校车接送记录"+ ".xls";
+         }
         insertInfo(arrayList,workbook.getSheet("info"));
-        String filename="校车接送记录"+arrayList.get(0).getBusNumber()+".xls";
         String rootpath="D:/OTA/download/";
         File fluteFile=new File(rootpath);
         if (!fluteFile.exists()) {
@@ -42,27 +50,16 @@ public class ExportExcel {
         FileOutputStream fileOutputStream=new FileOutputStream(file);
         workbook.write(fileOutputStream);
         fileOutputStream.close();
+        workbook.close();
         logger.debug("write successful");
-        return filename;
+        return file.getAbsolutePath();
     }
-    public String createBusInfoExcel() throws IOException{
-        initBushFile();
 
-        String filename="校车例检表.xls";
-        String rootpath="D:/OTA/download/";
-        File fluteFile=new File(rootpath);
-        if (!fluteFile.exists()) {
-            fluteFile.mkdirs();
-        }
-        File file=new File(rootpath+filename);
-        FileOutputStream fileOutputStream=new FileOutputStream(file);
-        workbook.write(fileOutputStream);
-        fileOutputStream.close();
-        logger.debug("write successful");
-        return filename;
-    }
     public  ExportExcel(){
          workbook=new HSSFWorkbook();
+        calendar=Calendar.getInstance();
+      sheet= workbook.createSheet("info");
+
         a_cellStyle= (HSSFCellStyle) workbook.createCellStyle();
         a_cellStyle.setBorderBottom(BorderStyle.THIN);
         a_cellStyle.setBorderLeft(BorderStyle.THIN);
@@ -71,50 +68,7 @@ public class ExportExcel {
         a_cellStyle.setBorderTop(BorderStyle.THIN);
     }
 
-    private Workbook initBushFile() {
-        CellRangeAddress cellRangeAddress;
-        /* 设置字体大小*/
-        Font fontStyle = workbook.createFont();
-        fontStyle.setBold(true);
-        fontStyle.setFontName("黑体");
-        Sheet sheet=workbook.createSheet("info");
-        Row row=sheet.createRow(0);
-        Cell cell=row.createCell(0);
-        cell.setCellValue("校车例检表");
-        cell.setCellStyle(a_cellStyle);
-        cellRangeAddress=new CellRangeAddress(0,0,0,22);
-        sheet.addMergedRegion(cellRangeAddress);
-        setBorderBottoms(cellRangeAddress,sheet);
-        row=sheet.createRow(1);
-        cell=row.createCell(0);
-        cell.setCellValue("车号");
-        cell.setCellStyle(a_cellStyle);
-        cellRangeAddress=new CellRangeAddress(1,1,1,8);
-        sheet.addMergedRegion(cellRangeAddress);
-        setBorderBottoms(cellRangeAddress,sheet);
-        cell=row.getCell(9);
-        cell.setCellValue("服务学校");
-        cell.setCellStyle(a_cellStyle);
-        cellRangeAddress=new CellRangeAddress(1,1,10,21);
-        sheet.addMergedRegion(cellRangeAddress);
-        setBorderBottoms(cellRangeAddress,sheet);
-        row=sheet.createRow(2);
-        initBusInfoRow( row);
-        return  workbook;
-
-    }
-    private void initBusInfoRow(Row row){
-        String[] strings={"发动机卫生","空滤卫生","电瓶卫生","药品箱","gps和监控","灭火器","应急门","安全锤","机油量","防冻液量","制动液","皮带松紧度","轮胎气压及螺丝","灯光","路牌","离合",
-                "制动器","方向盘","仪表盘"};
-        Cell cell;
-        for (int i=0;i<strings.length;i++){
-            cell=row.createCell(i+1);
-            cell.setCellValue(strings[i]);
-            cell.setCellStyle(a_cellStyle);
-        }
-    }
-    private Workbook initFile() {
-        Workbook workbook=new HSSFWorkbook();
+    private Workbook initFile(Sheet sheet) {
         HSSFCellStyle cellStyle= (HSSFCellStyle) workbook.createCellStyle();
         cellStyle.setAlignment(HorizontalAlignment.CENTER);
          a_cellStyle= (HSSFCellStyle) workbook.createCellStyle();
@@ -131,7 +85,6 @@ public class ExportExcel {
         fontStyle.setBold(true);
         fontStyle.setFontName("黑体");
         fontStyle.setFontHeightInPoints((short) 24);
-        Sheet sheet=workbook.createSheet("info");
         Row row=sheet.createRow(0);
         Cell cell=row.createCell(0);
         cell.setCellValue("校车接送记录");
@@ -230,9 +183,10 @@ public class ExportExcel {
     }
     public  void  insertInfo(List<StudentStatus> arrayList, Sheet sheet){
         HashMap<String,ArrayList<Integer>> hashMap=new HashMap<String, ArrayList<Integer>>();
+        HashMap<String ,String> stringStringHashMap=new HashMap<>();
         for (int i=0;i<arrayList.size();i++) {
             StudentStatus studentStatus=arrayList.get(i);
-
+            stringStringHashMap.put(studentStatus.getStudentName(),studentStatus.getStudentPhone());
             if (hashMap.keySet().contains(studentStatus.getStudentName())){
                 ArrayList<Integer>  excelArrayList=hashMap.get(studentStatus.getStudentName());
                 int  weekdate=getWeekOfDate(studentStatus.getTakeTime());
@@ -255,9 +209,16 @@ public class ExportExcel {
         int  index=5;
         Iterator iterator=hashMap.keySet().iterator();
         while (iterator.hasNext()){
-            ArrayList<Integer> arrayList1=hashMap.get(iterator.next());
+            String name= (String) iterator.next();
+            ArrayList<Integer> arrayList1=hashMap.get(name);
             Row row=sheet.createRow(index);
             Cell cell;
+            cell=row.createCell(0);
+            cell.setCellValue(name);
+            cell.setCellStyle(a_cellStyle);
+            cell=row.createCell(1);
+            cell.setCellValue(stringStringHashMap.get(name));
+            cell.setCellStyle(a_cellStyle);
             for (int i=0;i<arrayList1.size();i++){
                 cell=row.createCell(i+2);
                 if (arrayList1.get(i).equals(1)) {

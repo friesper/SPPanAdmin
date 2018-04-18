@@ -72,6 +72,12 @@
         });
     }
 </script>
+<script>
+    $("#export").click(function () {
+        window.open("/admin/info/status/info/getBusInfoExcel");
+    });
+
+</script>
 </#assign>
 <@layout title="校车每日检查" active="busInfo">
 <!-- Content Header (Page header) -->
@@ -98,13 +104,11 @@
         <div class="box-body">
             <table class="table table-striped">
                 <tr>
-                    <th>ID</th>
                     <th>车牌号</th>
                     <th>时间</th>
                     <th>操作</th>
                 </tr>
                 <tr>
-                    <td>${userInfo.id}</td>
                     <td>
                         <select id="busId" name="busId" class="form-control busId" >
                         </select></td>
@@ -117,6 +121,9 @@
                     </td>
                 </tr>
             </table>
+            <@shiro.hasPermission name="system:info:edit">
+                        <a class="btn btn-sm btn-primary export"  id="export"  >导出全部</a>
+            </@shiro.hasPermission>
         </div>
         <div class="box-footer clearfix">
         </div>

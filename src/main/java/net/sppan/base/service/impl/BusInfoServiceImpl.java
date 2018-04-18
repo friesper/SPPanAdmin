@@ -29,7 +29,7 @@ public class BusInfoServiceImpl extends BaseServiceImpl<BusInfo,Integer> impleme
 
     @Override
     public List<BusInfo> findAllByBusIdAndCreateTimeBetween(Integer id, Date startDate, Date endDate) {
-        return iBusInfoDao.findAllByBusIdAndCreateTimeBetween(id,startDate,endDate);
+        return iBusInfoDao.findAllByBusIdAndCreateTimeBetweenOrderByCreateTime(id,startDate,endDate);
     }
 
     public void saveOrUpdate(BusInfo  busInfo) {

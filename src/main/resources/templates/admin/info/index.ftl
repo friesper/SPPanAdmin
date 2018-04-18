@@ -52,7 +52,7 @@
 </script>
 <script>
     $("#export").click(function () {
-        window.open("/admin/info/status/info/getExcel/" + $("#busId").val());
+        window.open("/admin/info/status/info/getExcel");
     });
 
 </script>
@@ -93,9 +93,7 @@
                     <@shiro.hasPermission name="system:info:edit">
                         <a class="btn btn-sm btn-primary"  id="find"  >查找</a>
                     </@shiro.hasPermission>
-                         <@shiro.hasPermission name="system:info:edit">
-                        <a class="btn btn-sm btn-primary export"  id="export"  >导出</a>
-                         </@shiro.hasPermission>
+
                         <form action='ajax_url' hidden="hidden">
                         <input type="text" name="export" value="export">
                         <input type="submit" value="提交">
@@ -103,6 +101,9 @@
                     </td>
                 </tr>
             </table>
+            <@shiro.hasPermission name="system:info:edit">
+                        <a class="btn btn-sm btn-primary export"  id="export"  >导出全部</a>
+            </@shiro.hasPermission>
         </div>
         <div class="box-footer clearfix">
         </div>
