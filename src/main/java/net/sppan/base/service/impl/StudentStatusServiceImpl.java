@@ -7,6 +7,8 @@ import net.sppan.base.service.IStudentStatusService;
 import net.sppan.base.service.support.impl.BaseServiceImpl;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -23,9 +25,15 @@ public class StudentStatusServiceImpl extends BaseServiceImpl<StudentStatus,Inte
         return studentStatusDao;
     }
         @Override
-        public List<StudentStatus> findAllByBusIdAndTakeTime(Integer id, Date Date){
-               return studentStatusDao.findAllByBusIdAndTakeTime(id,Date);
+        public Page<StudentStatus> findAllByBusIdAndTakeTime(Integer id, Date date, PageRequest pageRequest){
+               return studentStatusDao.findAllByBusIdAndTakeTime(id,date,pageRequest);
         }
+
+    @Override
+    public List<StudentStatus> findAllByBusIdAndTakeTime(Integer id, Date date) {
+        return studentStatusDao.findAllByBusIdAndTakeTime(id,date);
+    }
+
     @Override
     public void saveOrUpdate(StudentStatus studentStatus) {
             studentStatusDao.save(studentStatus);

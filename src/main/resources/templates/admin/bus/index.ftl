@@ -49,6 +49,7 @@
                 <tr>
                     <th>ID</th>
                     <th>车辆车号</th>
+                    <th>操作</th>
                 </tr>
                  <#list pageInfo.content as busInfo>
                 <tr>

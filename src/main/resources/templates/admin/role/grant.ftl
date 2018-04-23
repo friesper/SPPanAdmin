@@ -1,10 +1,10 @@
 <#include "/admin/layout/layout.ftl">
 <#import "/admin/layout/macro.ftl" as macro>
 <#assign css>
-<link href="${ctx!}/assets/plugins/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+<link href="${ctx!}/static/assets/plugins/ztree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
 </#assign>
 <#assign js>
-<script src="${ctx!}/assets/plugins/zTree/jquery.ztree.all.min.js"></script>
+<script src="${ctx!}/static/assets/plugins/ztree/jquery.ztree.all.min.js"></script>
 <script>
     var setting = {
         check : {
@@ -47,8 +47,9 @@
             data : {"resourceIds":selectIds},
             success : function(msg) {
                 layer.msg(msg.message, {time: 2000},function(){
-                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                    parent.layer.close(index);
+                  /*  var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index);*/
+                    history.go(-1);
                 });
             },
             error : function(r,s,m) {

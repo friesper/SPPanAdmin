@@ -2,7 +2,7 @@ package net.sppan.base.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class ReqStatusInfo {
     private Integer id;

@@ -49,6 +49,7 @@
                 <tr>
                     <th>ID</th>
                     <th>名字</th>
+                    <th>操作</th>
                 </tr>
                 <#list pageInfo.content as schoolInfo>
                 <tr>

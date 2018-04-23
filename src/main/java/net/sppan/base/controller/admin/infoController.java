@@ -67,8 +67,7 @@ public class infoController extends BaseController {
     }
     @RequestMapping("/student/find/{id}/{date}")
     public  String find(@PathVariable Integer id, @PathVariable Date date, ModelMap modelMap){
-       List<StudentStatus> list= studentStatusService.findAllByBusIdAndTakeTime(id,date);
-        Page<StudentStatus> page=new PageImpl<StudentStatus>(list,getPageRequest(),list.size());
+        Page<StudentStatus> page= studentStatusService.findAllByBusIdAndTakeTime(id,date,getPageRequest());
         modelMap.put("pageInfo",page);
         modelMap.put("urls",request.getRequestURI());
         logger.debug("dasd"+request.getRequestURI());
