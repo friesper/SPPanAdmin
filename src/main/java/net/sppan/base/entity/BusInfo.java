@@ -6,7 +6,7 @@ import net.sppan.base.entity.support.BaseEntity;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
 @Table(name = "tb_bus_status")

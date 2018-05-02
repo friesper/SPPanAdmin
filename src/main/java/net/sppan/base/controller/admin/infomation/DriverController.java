@@ -84,15 +84,16 @@ public class DriverController extends BaseController {
         User user=getUser();
         Role role=user.getRoles().iterator().next();
 
-        if (role.getSchoolId()!=null){
+        if (role.getId()!=1){
             modelMap.put("schoolId",role.getSchoolId());
-
+            return "admin/driver/form";
         }
         else {
             modelMap.put("schoolId","");
             modelMap.put("roleId",role.getId());
+            return "admin/driver/adminform";
         }
-        return "admin/driver/form";
+
     }
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable Integer id, ModelMap map) {
@@ -190,5 +191,16 @@ public class DriverController extends BaseController {
         }
         return JsonResult.success("",jsonArray.toString());
     }
-
+    @RequestMapping(value = "/driverList/{id}")
+    @ResponseBody
+    public  JsonResult driverListBySchoolId(@PathVariable Integer id){
+        JSONArray jsonArray=new JSONArray();
+            List<RlationOFSD> list1= iRlationOFSDService.findBySchoolId(id);
+            Driver driver;
+            for (RlationOFSD rlationOFSD:list1){
+                driver=iDriverService.find(rlationOFSD.getDriverId());
+                jsonArray.add(driver);
+            }
+        return JsonResult.success("",jsonArray.toString());
+    }
 }

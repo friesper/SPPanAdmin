@@ -12,6 +12,7 @@ import net.sppan.base.service.support.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -58,8 +59,17 @@ public class BusServiceImpl extends BaseServiceImpl<Bus,Integer> implements IBus
     }
 
     @Override
+    public Page<Bus> findById(List<Integer> id, PageRequest pageRequest) {
+        return busDao.findByIdIn(id,pageRequest);
+    }
+
+    @Override
     public void delete(Integer id) {
         busDao.delete(id);
         relationAndBusService.deleteAllByBusid( id);
+    }
+    public Page<Bus> findAll(PageRequest pageable){
+        return busDao.findAll(pageable);
+
     }
 }

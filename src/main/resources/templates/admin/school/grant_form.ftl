@@ -8,7 +8,7 @@
     window.onload=function() {
 
         $.ajax({   //2、发送给后端
-            url: "${ctx!}/admin/driver/driverList",
+            url: "${ctx!}/admin/driver/driverList/${schoolId}",
             type: "GET",
             dataType: "JSON",  //返回的数据类型
             success: function (ress) {
@@ -22,7 +22,7 @@
             }
         });
         $.ajax({   //2、发送给后端
-            url: "${ctx!}/admin/nurse/nurseList",
+            url: "${ctx!}/admin/nurse/nurseList/${schoolId}",
             type: "GET",
             dataType: "JSON",  //返回的数据类型
             success: function (ress) {
@@ -49,7 +49,7 @@
             success: function(res){
                 layer.msg(res.message, {time: 2000
                 }, function(){
-                    history.go(-1);
+                    location.replace("/admin/school/grant/${schoolId}");
                 });
             }
         });

@@ -14,8 +14,7 @@ public interface IDriverDao extends IBaseDao<Driver,Integer> {
 
     Page<Driver> findDriverByWorkUnitId(Integer id,Pageable pageable);
 
-    @Override
-    List<Driver> findAll(Iterable<Integer> iterable);
+    Page<Driver> findByIdIn(Iterable<Integer> iterable,Pageable pageable);
 
     Driver findDriverByName(String name);
     Driver findDriverByUserName(String name);

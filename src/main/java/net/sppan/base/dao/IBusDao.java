@@ -13,4 +13,5 @@ public interface IBusDao extends IBaseDao<Bus,Integer> {
 
     @Override
     Page<Bus> findAll(Pageable pageable);
+    Page<Bus> findByIdIn(List<Integer> id,Pageable pageable);
 }

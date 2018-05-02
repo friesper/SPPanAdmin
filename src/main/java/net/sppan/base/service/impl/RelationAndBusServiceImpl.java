@@ -34,4 +34,9 @@ public class RelationAndBusServiceImpl extends BaseServiceImpl<RelationOfSchoolA
     public void deleteAllByBusid(Integer id) {
             relationAndBusDao.deleteAllByBusId(id);
     }
+
+    @Override
+    public RelationOfSchoolAndBus findByBusId(Integer id) {
+        return relationAndBusDao.findByBusId(id);
+    }
 }

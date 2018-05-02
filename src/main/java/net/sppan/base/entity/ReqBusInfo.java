@@ -2,7 +2,8 @@ package net.sppan.base.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
-import java.util.Date;
+import java.sql.Date;
+
 
 public class ReqBusInfo {
     private  Integer busId;
@@ -56,7 +57,7 @@ public class ReqBusInfo {
         this.driverName = driverName;
     }
 
-    public Date getCreateTime() {
+    public java.sql.Date getCreateTime() {
         return createTime;
     }
 

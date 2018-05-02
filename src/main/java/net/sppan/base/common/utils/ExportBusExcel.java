@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import static net.sppan.base.common.utils.ExportExcel.setBorderBottoms;
 
@@ -29,9 +30,7 @@ public class ExportBusExcel {
         String filename;
         if (list.size()>0){
             filename=list.get(0).getBusNumber()+"校车例检表.xls";
-        }else {
-            filename = "校车例检表.xls";
-        }
+
         String rootpath="D:/OTA/busInfo/";
         File fluteFile=new File(rootpath);
         if (!fluteFile.exists()) {
@@ -45,7 +44,11 @@ public class ExportBusExcel {
         fileOutputStream.close();
         workbook.close();
         logger.debug("write successful");
-        return file.getAbsolutePath();
+            return file.getAbsolutePath();
+        }else {
+            return null;
+        }
+
     }
     private void insertBusInfo(List<BusInfo> list,Sheet sheet) {
         Row row;Cell cell;
@@ -74,9 +77,15 @@ public class ExportBusExcel {
             cell=row.createCell(17);cell.setCellValue(busInfo.getBrake());cell.setCellStyle(a_cellStyle);
             cell=row.createCell(18);cell.setCellValue(busInfo.getSteeringWheel());cell.setCellStyle(a_cellStyle);
             cell=row.createCell(19);cell.setCellValue(busInfo.getInstrumentPanel());cell.setCellStyle(a_cellStyle);
+            cell=row.createCell(20);cell.setCellStyle(a_cellStyle);
+            cell=row.createCell(21);cell.setCellStyle(a_cellStyle);
             i++;
         }
-
+        row=sheet.getRow(1);
+        cell=row.getCell(1);
+        if (list.size()>0) {
+            cell.setCellValue(list.get(0).getBusNumber());
+        }
     }
     public  ExportBusExcel(){
         workbook=new HSSFWorkbook();

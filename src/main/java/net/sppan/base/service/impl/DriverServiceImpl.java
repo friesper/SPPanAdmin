@@ -78,8 +78,7 @@ public class DriverServiceImpl extends BaseServiceImpl<Driver, Integer>
 
     public Page<Driver> findById(HashSet<Integer> ids, PageRequest pageRequest) {
 
-         List<Driver> list=iDriverDao.findAll(ids);
-         Page<Driver> driverPage=new PageImpl<Driver>(list,pageRequest,list.size());
+        Page<Driver> driverPage=iDriverDao.findByIdIn(ids,pageRequest);
          return  driverPage;
     }
 

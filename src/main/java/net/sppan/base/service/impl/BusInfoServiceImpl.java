@@ -7,6 +7,8 @@ import net.sppan.base.entity.BusInfo;
 import net.sppan.base.service.IBusInfoService;
 import net.sppan.base.service.support.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -25,6 +27,11 @@ public class BusInfoServiceImpl extends BaseServiceImpl<BusInfo,Integer> impleme
     @Override
     public List<BusInfo> findAllByBusIdAndCreateTime(Integer id, Date date) {
         return iBusInfoDao.findAllByBusIdAndCreateTime(id,date);
+    }
+
+    @Override
+    public Page<BusInfo> findAllByBusIdAndCreateTime(Integer id, Date date, PageRequest pageRequest) {
+        return iBusInfoDao.findAllByBusIdAndCreateTime(id,date,pageRequest);
     }
 
     @Override

@@ -39,7 +39,7 @@
  <div class="box box-primary">
      <div class="box-header">
         <@shiro.hasPermission name="system:school:grant:add">
-            <a class="btn btn-sm btn-success" href="${ctx!}/admin/school/grant/add">新增</a>
+            <a class="btn btn-sm btn-success" href="${ctx!}/admin/school/grant/add/${schoolId}">新增</a>
         </@shiro.hasPermission>
      </div>
      <div class="box-body">
@@ -70,8 +70,10 @@
          </table>
      </div>
      <div class="box-footer clearfix">
+         <button type="button" class="btn btn-default btn-back">返回</button>
             <@macro.page pageInfo=pageInfo  url="${ctx!}/admin/school/grant" />
      </div>
+
  </div>
 <!-- /.content -->
 </@layout>

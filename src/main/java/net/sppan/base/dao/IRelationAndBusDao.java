@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface IRelationAndBusDao  extends IBaseDao<RelationOfSchoolAndBus,Integer>{
     public List<RelationOfSchoolAndBus> findAllBySchoolId(Integer id);
+    RelationOfSchoolAndBus findByBusId(Integer id);
     public  void deleteAllByBusId(Integer id);
     public  void  deleteAllBySchoolId(Integer id);
 }

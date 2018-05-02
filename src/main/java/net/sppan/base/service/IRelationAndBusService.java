@@ -10,4 +10,6 @@ public interface IRelationAndBusService extends IBaseService<RelationOfSchoolAnd
     List<RelationOfSchoolAndBus> findBySchoolId(Integer id);
     void deleteAllBySchoolId(Integer id);
     void deleteAllByBusid(Integer id);
+    RelationOfSchoolAndBus findByBusId(Integer id);
+
 }

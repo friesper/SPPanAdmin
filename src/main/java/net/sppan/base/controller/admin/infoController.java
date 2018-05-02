@@ -32,6 +32,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -39,11 +41,13 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import static org.apache.catalina.startup.ExpandWar.deleteDir;
+
 @Controller
 @RequestMapping("/admin/info")
 public class infoController extends BaseController {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(Application.class);
-
+    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
     @Autowired
     IBusInfoService busInfoService;
     @Autowired
@@ -71,6 +75,8 @@ public class infoController extends BaseController {
         modelMap.put("pageInfo",page);
         modelMap.put("urls",request.getRequestURI());
         logger.debug("dasd"+request.getRequestURI());
+        modelMap.put("uus","/admin/info/status/info/getStudentExcel/"+id.toString()+"/"+simpleDateFormat.format(date));
+
         /*modelMap.put("request",request);*/
         return "admin/info/studentForm";
     }
@@ -111,9 +117,10 @@ public class infoController extends BaseController {
     @RequestMapping("/bus/find/{id}/{date}")
     public  String busfind(@PathVariable Integer id, @PathVariable Date date, ModelMap modelMap){
 
-        List<BusInfo> list= busInfoService.findAllByBusIdAndCreateTime(id,date);
-        Page<BusInfo> page=new PageImpl<>(list,getPageRequest(),list.size());
+        Page<BusInfo> page=busInfoService.findAllByBusIdAndCreateTime(id,date,getPageRequest());
         modelMap.put("pageInfo",page);
+        modelMap.put("urls",request.getRequestURI());
+        modelMap.put("uus","/admin/info/status/info/getBusInfoExcel/"+id.toString()+"/"+simpleDateFormat.format(date));
         return "admin/info/bus/busForm";
     }
     @RequestMapping("/bus/info/find/{id}/{date}")
@@ -209,35 +216,32 @@ public class infoController extends BaseController {
            Date startdate = cal.getTime();
            List<StudentStatus> list;
         if (roleId!=1) {
+            String name;
             List<RelationOfSchoolAndBus> relationOfSchoolAndBuses = relationAndBusService.findBySchoolId(getUser().getRoles().iterator().next().getSchoolId());
             for (RelationOfSchoolAndBus r : relationOfSchoolAndBuses) {
                 exportExcel=new ExportExcel();
                 list = studentStatusService.findByBusIdBetweenDate(r.getBusId(), startdate, date);
-                createFilesPath.add(exportExcel.createStudentstatusExcel(list));
-
+                    name=exportExcel.createStudentstatusExcel(list);
+                    if (name!=null) {
+                        createFilesPath.add(name);
+                     }
             }
         }
         else {
             List<Bus> list1=busService.findAll();
+            String name;
             for (Bus b:list1){
                 exportExcel=new ExportExcel();
                 list = studentStatusService.findByBusIdBetweenDate(b.getId(), startdate, date);
-                createFilesPath.add(exportExcel.createStudentstatusExcel(list));
+                   name= exportExcel.createStudentstatusExcel(list);
+            if (name != null) {
+                createFilesPath.add(name);
+                     }
+                }
             }
 
-        }
+
         exportZip("校车接送记录.zip",response, createFilesPath);
-           // FileSystemResource file = new FileSystemResource(filePath);
-
-
-        /*HttpHeaders headers = new HttpHeaders();
-        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getFilename()));
-        headers.add("Pragma", "no-cache");
-        headers.add("Expires", "0");
-        Resource resource = new InputStreamResource(file.getInputStream());
-        return ResponseEntity.ok().headers(headers).contentType(MediaType.parseMediaType("application/x-msdownload")).body(resource);
-*/
 
 
     }
@@ -260,8 +264,10 @@ public class infoController extends BaseController {
 
             File[] file1 =new File[createFilesPath.size()] ;
 
-            for(int i=0;i<createFilesPath.size();i++){
-                file1[i]=new File(createFilesPath.get(i));
+            for(int i=0;i<createFilesPath.size();i++) {
+                if (createFilesPath.get(i) != null) {
+                    file1[i] = new File(createFilesPath.get(i));
+                }
             }
             for (int i = 0; i < file1.length; i++) {
                 FileInputStream fiss = new FileInputStream(file1[i]);
@@ -280,6 +286,44 @@ public class infoController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        finally {
+            deleteDir(new File(zipPath));
+        }
+    }
+    @RequestMapping(value = "/status/info/getBusInfoExcel/{id}/{date}" ,method = RequestMethod.GET)
+    @ResponseBody
+    public void getOneBusExcel( HttpServletRequest request, HttpServletResponse response,@PathVariable Integer id,@PathVariable Date date) throws IOException {
+        ExportBusExcel exportExcel=new ExportBusExcel();
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/octet-stream");
+        String  filename;
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH,1);
+        List<BusInfo> busInfo=busInfoService.findAllByBusIdAndCreateTime(id,date);
+       filename= exportExcel.createBusInfoExcel(busInfo);
+       if (filename!=null) {
+           File file=new File(filename);
+           logger.debug("filename      "+ file.getName());
+           this.downloadFile(env.getProperty("busnInfo.path"),file.getName(), response);
+       }
+    }
+    @RequestMapping(value = "/status/info/getStudentExcel/{id}/{date}" ,method = RequestMethod.GET)
+    @ResponseBody
+    public void getOneStudentExcel( HttpServletRequest request, HttpServletResponse response,@PathVariable Integer id,@PathVariable Date date) throws IOException {
+        ExportExcel exportExcel=new ExportExcel();
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/octet-stream");
+        String  filename;
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH,1);
+        List<StudentStatus> studentStatuses=studentStatusService.findAllByBusIdAndTakeTime(id,date);
+        filename= exportExcel.createStudentstatusExcel(studentStatuses);
+        if (filename!=null) {
+            File file=new File(filename);
+            logger.debug("filename          "+file.getName());
+            this.downloadFile(env.getProperty("download.path"), file.getName(), response);
+        }
+
     }
 
     @RequestMapping(value = "/status/info/getBusInfoExcel" ,method = RequestMethod.GET)
@@ -298,18 +342,27 @@ public class infoController extends BaseController {
         int id=getUser().getRoles().iterator().next().getId();
         List<BusInfo> list;
         if (id==1){
+            String name;
             List<Bus> list1=busService.findAll();
             for (Bus bus1:list1){
                 exportExcel=new ExportBusExcel();
                 list=busInfoService.findAllByBusIdAndCreateTimeBetween(bus1.getId(),startdate,date);
-                createFilesPath.add(exportExcel.createBusInfoExcel(list));
+               name=exportExcel.createBusInfoExcel(list);
+                    if (name!= null) {
+                        createFilesPath.add(name);
+                    }
             }
         }
         else {
+            String name;
             List<RelationOfSchoolAndBus> relationOfSchoolAndBuses=relationAndBusService.findBySchoolId(getUser().getRoles().iterator().next().getSchoolId());
-            for (RelationOfSchoolAndBus r:relationOfSchoolAndBuses){
-                exportExcel=new ExportBusExcel();
-                createFilesPath.add(exportExcel.createBusInfoExcel(busInfoService.findAllByBusIdAndCreateTimeBetween(r.getBusId(),startdate,date)));
+            for (RelationOfSchoolAndBus r:relationOfSchoolAndBuses) {
+                exportExcel = new ExportBusExcel();
+                List list1 = busInfoService.findAllByBusIdAndCreateTimeBetween(r.getBusId(), startdate, date);
+                name = exportExcel.createBusInfoExcel(list1);
+                if (name != null) {
+                    createFilesPath.add(name);
+                }
             }
 
         }
@@ -355,5 +408,17 @@ public class infoController extends BaseController {
         catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+    private static boolean deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i=0; i<children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+        return dir.delete();
     }
 }

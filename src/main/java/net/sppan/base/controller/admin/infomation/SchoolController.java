@@ -89,6 +89,7 @@ public class SchoolController extends BaseController {
             }
             Page<SchoolGrantInfo> pageInfo=new PageImpl<>(schoolGrantInfos,getPageRequest(),schoolGrantInfos.size());
             modelMap.put("pageInfo",pageInfo);
+            modelMap.put("schoolId",id);
             return "admin/school/grant";
 
     }
@@ -107,6 +108,8 @@ public class SchoolController extends BaseController {
         }
         map.put("pageInfo",schoolGrantInfo);
             logger.debug("      dsadas++"+schoolGrantInfo.toString());
+        Integer schoolId=nurse.getWorkUnitId();
+        map.put("schoolId",schoolId);
         return  "admin/school/grant_form";
     }
     @RequestMapping(value = {"/edit"}, method = RequestMethod.POST)
@@ -169,8 +172,9 @@ public class SchoolController extends BaseController {
 
         return JsonResult.success("",jsonArray.toString());
     }
-    @RequestMapping(value = "/grant/add",method = RequestMethod.GET)
-    public  String  grant_add(){
+    @RequestMapping(value = "/grant/add/{id}",method = RequestMethod.GET)
+    public  String  grant_add(@PathVariable Integer id,ModelMap modelMap){
+        modelMap.put("schoolId",id);
         return "admin/school/grant_form";
     }
     @RequestMapping(value = {"/grant/edit"}, method = RequestMethod.POST)

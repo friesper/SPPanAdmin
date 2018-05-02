@@ -3,12 +3,15 @@ package net.sppan.base.controller.admin.infomation;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import net.sppan.base.Application;
 import net.sppan.base.common.JsonResult;
 import net.sppan.base.controller.BaseController;
 import net.sppan.base.dao.IRelationAndBusDao;
 import net.sppan.base.entity.*;
 import net.sppan.base.service.IRelationAndBusService;
+import net.sppan.base.service.IRelationOfSchoolAndNurseService;
 import net.sppan.base.service.impl.BusServiceImpl;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -25,6 +28,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin/bus")
 public class BusController extends BaseController {
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(Application.class);
 
     @Autowired
     BusServiceImpl busService;
@@ -32,31 +36,37 @@ public class BusController extends BaseController {
     IRelationAndBusDao iRelationAndBusDao;
     @Autowired
     IRelationAndBusService relationAndBusService;
+    @Autowired
+    IRelationOfSchoolAndNurseService relationOfSchoolAndNurseService;
 
     @RequestMapping(value = "/index")
     public String index(ModelMap modelMap){
         User user=getUser();
+        Page<Bus> page;
         Role role=user.getRoles().iterator().next();
-        List<Bus> list=new ArrayList<>();
+        List<Integer> list=new ArrayList<>();
         if (role.getId()!=1){
           List<RelationOfSchoolAndBus> list1= relationAndBusService.findBySchoolId(role.getSchoolId());
             for (RelationOfSchoolAndBus relationOfSchoolAndBus:list1){
-                list.add(busService.find(relationOfSchoolAndBus.getBusId()));
+                list.add(relationOfSchoolAndBus.getBusId());
             }
-
+            page=busService.findById(list,getPageRequest());
         }else {
-            list=busService.findAll();
+            page=busService.findAll(getPageRequest());
         }
-        Page<Bus> page=new PageImpl<>(list,getPageRequest(),list.size());
         modelMap.put("pageInfo",page);
         return "admin/bus/index";
 
     }
     @RequestMapping(value = "/add",method = RequestMethod.GET)
     public String add(){
-
+        if (getUser().getRoles().iterator().next().getId()==1){
+            return  "admin/bus/adminform";
+        }
+        else {
 
         return "admin/bus/form";
+        }
     }
     @RequestMapping(value = "/delete/{id}",method = RequestMethod.POST)
     @ResponseBody
@@ -70,26 +80,32 @@ public class BusController extends BaseController {
         return JsonResult.success();
     }
     @RequestMapping(value = "/edit/{id}",method = RequestMethod.GET)
-    public String edit(@PathVariable Integer id,ModelMap modelMap){
-        Bus bus=busService.find(id);
-        modelMap.put("bus",bus);
-        return "admin/bus/form";
-
+    public String edit(@PathVariable Integer id,ModelMap modelMap) {
+        Bus bus = busService.find(id);
+        modelMap.put("bus", bus);
+        RelationOfSchoolAndBus relationOfSchoolAndBus=relationAndBusService.findByBusId(id);
+        int schoolId=relationOfSchoolAndBus.getSchoolId();
+        modelMap.put("schoolId",schoolId);
+        if (getUser().getRoles().iterator().next().getId() == 1) {
+            return "admin/bus/adminform";
+        } else {
+            return "admin/bus/form";
+        }
     }
     @RequestMapping(value = "/edit",method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult edit(Bus bus){
+    public JsonResult edit(ReqBus reqBus){
 
         try {
-            if (getUser().getRoles().iterator().next().getId()==1){
-                throw new Exception( "超级管理员不能添加车辆信息");
+            Bus bus=new Bus();
+            bus.setNumber(reqBus.getNumber());
+            bus.setId(reqBus.getId());
+            if (reqBus.getSchoolId()==null){
+                reqBus.setSchoolId(getUser().getRoles().iterator().next().getSchoolId());
             }
-            else
-            {
-            Integer schoolId=0;
-            schoolId=getUser().getRoles().iterator().next().getSchoolId();
-            busService.saveOrUpdate(bus,schoolId);
-            }
+            busService.saveOrUpdate(bus,reqBus.getSchoolId());
+            logger.debug(reqBus.toString());
+
         } catch (Exception e) {
             return JsonResult.failure(e.getMessage());
         }
@@ -135,6 +151,21 @@ public class BusController extends BaseController {
                 list.add(busService.find(relationOfSchoolAndBus.getBusId()));
             }
         }
+        for (int i=0;i<list.size();i++){
+            jsonArray.add(list.get(i));
+        }
+        return JsonResult.success("",jsonArray.toString());
+    }
+    @RequestMapping(value = "/busList/{id}",method = RequestMethod.GET)
+    @ResponseBody
+    public  JsonResult busListBySchool(@PathVariable Integer id){
+        List<Bus> list;
+        JSONArray jsonArray=new JSONArray();
+            List<RelationOfSchoolAndBus>  list1=  iRelationAndBusDao.findAllBySchoolId(id);
+            list=new ArrayList<Bus>();
+            for (RelationOfSchoolAndBus relationOfSchoolAndBus:list1){
+                list.add(busService.find(relationOfSchoolAndBus.getBusId()));
+            }
         for (int i=0;i<list.size();i++){
             jsonArray.add(list.get(i));
         }

@@ -20,6 +20,7 @@ import net.sppan.base.controller.BaseController;
 import net.sppan.base.entity.Role;
 import net.sppan.base.service.IRoleService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -68,6 +69,9 @@ public class RoleController extends BaseController {
     public JsonResult delete(@PathVariable Integer id, ModelMap map) {
         try {
             logger.debug("roleservice  id "+id);
+            if (id==1){
+                throw new Exception("超级管理员角色不能被删除");
+            }
             roleService.delete(id);
         } catch (Exception e) {
             e.printStackTrace();

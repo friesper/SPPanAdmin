@@ -35,7 +35,7 @@
 </script>
 <script>
     function del(id){
-        console.log("id"+id)
+        console.log("id"+id);
         layer.confirm('确定删除吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
                 type: "POST",
@@ -91,7 +91,7 @@
                     <td>${userInfo.name}</td>
                     <td>${userInfo.phone}</td>
                     <td>${userInfo.busNumber}</td>
-                    <td><img src="/admin/image/${userInfo.driverImage}"  width="50" height="50" onerror='nofind(this)'></td>
+                    <td><img src="${ctx!}/admin/image/${userInfo.driverImage}"  width="50" height="50" onerror='nofind(this)'></td>
                     <td>${userInfo.workUnitName}</td>
 
                     <td>

@@ -83,15 +83,16 @@ public class NurseController extends BaseController {
         User user=getUser();
         Role role=user.getRoles().iterator().next();
 
-        if (role.getSchoolId()!=null){
+        if (role.getId()!=1){
             modelMap.put("schoolId",role.getSchoolId());
-
+            return "admin/nurse/form";
         }
         else {
             modelMap.put("schoolId","");
             modelMap.put("roleId",role.getId());
+            return "admin/nurse/adminform";
         }
-        return "admin/nurse/form";
+
     }
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable Integer id, ModelMap map) {
@@ -134,6 +135,19 @@ public class NurseController extends BaseController {
         else {
             list=nurseService.findBySchoolId(role.getSchoolId());
         }
+        for (Nurse nurse :list){
+            jsonArray.add(nurse);
+        }
+
+        return JsonResult.success("",jsonArray.toString());
+    }
+    @RequestMapping(value = "nurseList/{id}",method = RequestMethod.GET)
+    @ResponseBody
+    public  JsonResult nurseListBySchoolId(@PathVariable Integer id){
+        List<Nurse> list;
+        JSONArray jsonArray=new JSONArray();
+
+            list=nurseService.findBySchoolId(id);
         for (Nurse nurse :list){
             jsonArray.add(nurse);
         }

@@ -50,6 +50,11 @@
         });
     }
 </script>
+<script>
+    $("#export").click(function () {
+       window.open("${uus}");
+    });
+</script>
 </#assign>
 <@layout title="校车接送信息" active="info">
 <!-- Content Header (Page header) -->
@@ -69,9 +74,7 @@
     <!-- Default box -->
     <div class="box box-primary">
         <div class="box-header">
-       <#-- <@shiro.hasPermission name="system:info:add">
-            <a class="btn btn-sm btn-success" href="${ctx!}/admin/info/studnet/add">新增</a>
-        </@shiro.hasPermission>-->
+            <a class="btn btn-sm btn-success" id="export" >导出Excel</a>
         </div>
         <div class="box-body">
             <table class="table table-striped">

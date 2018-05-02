@@ -34,25 +34,27 @@ public class ExportExcel {
 
          workbook = initFile(sheet);
          String filename;
-         if (arrayList.size()>0){
-              filename="校车接送记录"+arrayList.get(0).getBusNumber()+".xls";
+         if (arrayList.size()>0) {
+             filename = "校车接送记录" + arrayList.get(0).getBusNumber() + ".xls";
+
+             insertInfo(arrayList, workbook.getSheet("info"));
+             String rootpath = "D:/OTA/download/";
+             File fluteFile = new File(rootpath);
+             if (!fluteFile.exists()) {
+                 fluteFile.mkdirs();
+             }
+             File file = new File(rootpath + filename);
+             FileOutputStream fileOutputStream = new FileOutputStream(file);
+             workbook.write(fileOutputStream);
+             fileOutputStream.close();
+             workbook.close();
+             logger.debug("write successful");
+             logger.debug("absoulutepath        "+file.getAbsolutePath());
+             return file.getAbsolutePath();
          }
-         else {
-              filename = "校车接送记录"+ ".xls";
-         }
-        insertInfo(arrayList,workbook.getSheet("info"));
-        String rootpath="D:/OTA/download/";
-        File fluteFile=new File(rootpath);
-        if (!fluteFile.exists()) {
-            fluteFile.mkdirs();
+        else {
+            return null;
         }
-        File file=new File(rootpath+filename);
-        FileOutputStream fileOutputStream=new FileOutputStream(file);
-        workbook.write(fileOutputStream);
-        fileOutputStream.close();
-        workbook.close();
-        logger.debug("write successful");
-        return file.getAbsolutePath();
     }
 
     public  ExportExcel(){
@@ -103,6 +105,7 @@ public class ExportExcel {
         cell.setCellValue("车牌号:");
         cellRangeAddress=new CellRangeAddress(1,1,5,8);
         sheet.addMergedRegion(cellRangeAddress);
+
         cell=row.createCell(5);
         cell=row.createCell(9);
         cell.setCellValue("日期:");
@@ -127,7 +130,7 @@ public class ExportExcel {
         sheet.addMergedRegion(cellRangeAddress);
         setBorderBottoms(cellRangeAddress,sheet);
         cell=row.createCell(2);
-        cell.setCellValue("第   周");
+        cell.setCellValue("             第                         周");
         cellRangeAddress=new CellRangeAddress(2,2,2,11);
         sheet.addMergedRegion(cellRangeAddress);
         setBorderBottoms(cellRangeAddress,sheet);
@@ -182,6 +185,9 @@ public class ExportExcel {
         RegionUtil.setBorderTop(BorderStyle.THIN, cellRangeAddress, sheet);
     }
     public  void  insertInfo(List<StudentStatus> arrayList, Sheet sheet){
+        Row row1=sheet.getRow(1);
+        Cell celsl=row1.getCell(5);
+        celsl.setCellValue(arrayList.get(0).getBusNumber());
         HashMap<String,ArrayList<Integer>> hashMap=new HashMap<String, ArrayList<Integer>>();
         HashMap<String ,String> stringStringHashMap=new HashMap<>();
         for (int i=0;i<arrayList.size();i++) {
@@ -191,7 +197,7 @@ public class ExportExcel {
                 ArrayList<Integer>  excelArrayList=hashMap.get(studentStatus.getStudentName());
                 int  weekdate=getWeekOfDate(studentStatus.getTakeTime());
                 int timeqyuuer=studentStatus.getTimeQuantum();
-                excelArrayList.add((weekdate-1)*2+timeqyuuer,studentStatus.getStatus());
+                excelArrayList.set((weekdate-1)*2+timeqyuuer,studentStatus.getStatus());
             }
             else {
                 ArrayList<Integer> excelArrayList;
@@ -225,11 +231,9 @@ public class ExportExcel {
                     cell.setCellValue("✓");
                     logger.debug("arrlist"+arrayList1.get(i)+"cell+"+cell.getAddress());
                 }
-                else {
-                    cell.setCellValue("✗");
-                }
                 cell.setCellStyle(a_cellStyle);
             }
+            index++;
         }
 
     }

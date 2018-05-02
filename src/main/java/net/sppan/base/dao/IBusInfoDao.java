@@ -17,6 +17,8 @@ public interface IBusInfoDao extends IBaseDao<BusInfo,Integer> {
     @Override
     Page<BusInfo> findAll(Pageable pageable);
     List<BusInfo> findAllByBusId(Integer id);
+    Page<BusInfo> findAllByBusIdAndCreateTime(Integer id, Date date,Pageable pageable);
+
     @Override
     List<BusInfo> findAll(Specification<BusInfo> specification);
     List<BusInfo> findAllByBusIdAndCreateTime(Integer id, Date date);
