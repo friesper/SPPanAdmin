@@ -13,11 +13,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -103,8 +104,38 @@ public class NurseController extends BaseController {
     }
     @RequestMapping(value = {"/edit"}, method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult edit( Nurse nurse, ModelMap map) {
+    public JsonResult edit(@RequestParam("nurseImageFile") MultipartFile multipartFile, Nurse nurse, ModelMap map) {
         try {
+            if (!multipartFile.isEmpty()) {
+                logger.debug("dsad"+multipartFile.getOriginalFilename());
+                String rootPathDir = env.getProperty("upload.path");
+                String fullPathDir = rootPathDir;
+                /**根据本地路径创建目录**/
+                File fullPathFile = new File(fullPathDir);
+                if (!fullPathFile.exists())
+                    fullPathFile.mkdirs();
+                /** 获取文件的后缀* */
+                String suffix = multipartFile.getOriginalFilename().substring(
+                        multipartFile.getOriginalFilename().lastIndexOf("."));
+                String fileName = nurse.getName() + nurse.getId() + suffix;
+                String filePath = rootPathDir + fileName;
+                if (nurse.getNurseImage()!=null){
+                    File file=new File(rootPathDir+nurse.getNurseImage());
+                    if (file.exists()){
+                        file.delete();
+                    }
+                }
+                /** 文件输出流* */
+                File file = new File(filePath);
+                try (FileOutputStream fileOutputStream = new FileOutputStream(file);
+                     BufferedOutputStream stream = new BufferedOutputStream(fileOutputStream)) {
+                    stream.write(multipartFile.getBytes());
+                    stream.flush();
+                    nurse.setNurseImage(fileName);
+                } catch (Exception e) {
+                    return JsonResult.failure(e.getMessage());
+                }
+            }
             nurseService.saveOrUpdate(nurse);
         } catch (Exception e) {
             return JsonResult.failure(e.getMessage());

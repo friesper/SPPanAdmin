@@ -21,6 +21,17 @@ public class Nurse extends BaseEntity {
     private Integer workUnitId;
     @Column(name = "work_unit_name")
     private String workUnitName;
+    @Column(name = "nurse_image")
+    private String nurseImage;
+
+    public String getNurseImage() {
+        return nurseImage;
+    }
+
+    public void setNurseImage(String nurseImage) {
+        this.nurseImage = nurseImage;
+    }
+
     public Integer getId() {
         return id;
     }

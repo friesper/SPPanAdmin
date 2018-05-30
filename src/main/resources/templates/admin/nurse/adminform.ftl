@@ -47,6 +47,7 @@
             });
         }
         else {
+            var formData = new FormData(document.getElementById("form"))
             $("#workUnitName").val($("#workUnitId").find("option:selected").text());
             $.ajax({
                 type: "POST",
@@ -54,7 +55,9 @@
                 url: "${ctx!}/admin/nurse/edit",
                 async: false,
                 cache: false,
-                data: $(".form-edit").serialize(),
+                contentType: false,
+                processData: false,
+                data: formData,
                 success: function (ress) {
                     layer.msg(ress.message, {
                         time: 2000
@@ -125,6 +128,19 @@
                             <div class="col-sm-10">
                                 <select  id="workUnitId" name="workUnitId" class="form-control workUnitId" <#if roleId!=1>readonly="readonly" </#if>     >
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-group"  id="nurseImageDiv"  >
+                            <label class="col-sm-2 control-label">身份证照片：</label>
+                            <div class="col-sm-10" >
+                                <img id="showImage"  width="50" height="50" src="/admin/image/${nurse.nurseImage}" onerror='var list=document.getElementById("nurseImageDiv");
+list.remove();'>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">上传身份证照片：</label>
+                            <div class="col-sm-10">
+                                <input id="nurseImageFile" name="nurseImageFile" class="form-control" type="file" value="${nurse.nurseImage}">
                             </div>
                         </div>
                     </div>

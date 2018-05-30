@@ -89,7 +89,7 @@
                     <td>${userInfo.name}</td>
                     <td>${userInfo.phone}</td>
                     <td>${userInfo.workUnitName}</td>
-
+                    <td><img src="${ctx!}/admin/image/${userInfo.nurseImage}"  width="50" height="50" onerror='nofind(this)'></td>
                     <td>
                     <@shiro.hasPermission name="system:nurse:edit">
                         <a class="btn btn-sm btn-primary" href="${ctx!}/admin/nurse/edit/${userInfo.id}">编辑</a>

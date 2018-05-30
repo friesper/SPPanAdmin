@@ -58,6 +58,7 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse,Integer> implements 
             dbnurse.setWorkUnitName(nurse.getWorkUnitName());
             dbnurse.setUserName(nurse.getUserName());
             dbnurse.setPassWord(nurse.getPassWord());
+            dbnurse.setNurseImage(nurse.getNurseImage());
             update(nurse);
         }
         else {
