@@ -18,6 +18,24 @@ public class ReqStatusInfo {
     private Integer timeQuantum;
     private String busNumber;
     private Integer status;
+    private String distance;
+    private String adress;
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    public String getAdress() {
+        return adress;
+    }
+
+    public void setAdress(String adress) {
+        this.adress = adress;
+    }
 
     @Override
     public String toString() {

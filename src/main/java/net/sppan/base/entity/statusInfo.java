@@ -17,8 +17,26 @@ public class statusInfo {
         private String studentName;
         private String studentPhone;
         private Integer timeQuantum;
+        private float distance;
+        private String address;
 
-        public Integer getId() {
+    public float getDistance() {
+        return distance;
+    }
+
+    public void setDistance(float distance) {
+        this.distance = distance;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String adress) {
+        this.address = adress;
+    }
+
+    public Integer getId() {
             return id;
         }
 

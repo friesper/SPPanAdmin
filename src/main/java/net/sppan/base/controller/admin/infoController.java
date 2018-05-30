@@ -174,9 +174,7 @@ public class infoController extends BaseController {
         ReqStatusInfo reqStatusInfo;
         try {
 
-            logger.debug("sdasdasd                    reqstatusinfo      " + reqStatusInfos.size());
             for (int i=0;i<reqStatusInfos.size();i++){
-                logger.debug("sadsadad"+reqStatusInfos.get(i).toString());
                 reqStatusInfo=reqStatusInfos.get(i);
               studentStatus=new StudentStatus();
               studentStatus.setTakeTime(reqStatusInfo.getTakeTime());
@@ -190,6 +188,8 @@ public class infoController extends BaseController {
               studentStatus.setStudentName(reqStatusInfo.getStudentName());
               studentStatus.setStudentPhone(reqStatusInfo.getStudentPhone());
               studentStatus.setTimeQuantum(reqStatusInfo.getTimeQuantum());
+              studentStatus.setAddress(reqStatusInfo.getAdress());
+              studentStatus.setDistance(reqStatusInfo.getDistance());
               studentStatusService.saveOrUpdate(studentStatus);
             }
 

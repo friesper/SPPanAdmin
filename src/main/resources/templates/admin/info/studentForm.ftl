@@ -80,23 +80,23 @@
             <table class="table table-striped">
                 <tr>
                     <th>车辆(车牌号)</th>
-                    <th>司机姓名</th>
                     <th>日期</th>
                     <th>时间</th>
                     <th>学生姓名</th>
                     <th>乘车情况</th>
-                    <th>照管员姓名</th>
+                    <th>住址</th>
+                    <th>距离</th>
                     <th>操作</th>
                 </tr>
                 <#list pageInfo.content as statusInfo>
                 <tr>
                     <td>${statusInfo.busNumber}</td>
-                    <td>${statusInfo.driverName}</td>
                     <td>${statusInfo.takeTime}</td>
                     <td><#if statusInfo.timeQuantum ==0>上午</#if> <#if statusInfo.timeQuantum==1>下午</#if></td>
                     <td>${statusInfo.studentName}</td>
                     <td> <#if statusInfo.status ==0>未乘车</#if> <#if statusInfo.status==1>乘车</#if></td>
-                    <td>${statusInfo.nurseName}</td>
+                    <td>${statusInfo.address}</td>
+                    <td>${statusInfo.distance}</td>
                     <td>
                     <#--<@shiro.hasPermission name="system:info:edit">
                         <a class="btn btn-sm btn-primary" href="${ctx!}/admin/driver/edit/${userInfo.id}">编辑</a>

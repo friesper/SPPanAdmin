@@ -37,6 +37,26 @@ public class StudentStatus extends BaseEntity {
     private String busNumber;
     @Column(name = "status")
     private Integer status;
+    @Column(name = "address")
+    private String address;
+    @Column(name = "distance")
+    private String  distance;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
 
     public Integer getStatus() {
         return status;
