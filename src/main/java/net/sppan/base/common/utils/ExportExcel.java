@@ -36,7 +36,6 @@ public class ExportExcel {
          String filename;
          if (arrayList.size()>0) {
              filename = "校车接送记录" + arrayList.get(0).getBusNumber() + ".xls";
-
              insertInfo(arrayList, workbook.getSheet("info"));
              String rootpath = "D:/OTA/download/";
              File fluteFile = new File(rootpath);
@@ -58,10 +57,9 @@ public class ExportExcel {
     }
 
     public  ExportExcel(){
-         workbook=new HSSFWorkbook();
+        workbook=new HSSFWorkbook();
         calendar=Calendar.getInstance();
-      sheet= workbook.createSheet("info");
-
+        sheet= workbook.createSheet("info");
         a_cellStyle= (HSSFCellStyle) workbook.createCellStyle();
         a_cellStyle.setBorderBottom(BorderStyle.THIN);
         a_cellStyle.setBorderLeft(BorderStyle.THIN);
@@ -73,7 +71,7 @@ public class ExportExcel {
     private Workbook initFile(Sheet sheet) {
         HSSFCellStyle cellStyle= (HSSFCellStyle) workbook.createCellStyle();
         cellStyle.setAlignment(HorizontalAlignment.CENTER);
-         a_cellStyle= (HSSFCellStyle) workbook.createCellStyle();
+        a_cellStyle= (HSSFCellStyle) workbook.createCellStyle();
         HSSFCellStyle b_cellStyle= (HSSFCellStyle) workbook.createCellStyle();
         CellRangeAddress cellRangeAddress;
         a_cellStyle.setBorderBottom(BorderStyle.THIN);
@@ -113,7 +111,7 @@ public class ExportExcel {
         sheet.addMergedRegion(cellRangeAddress);
         for (int i=2;i<5;i++){
             row=sheet.createRow(i);
-            for (int m=0;m<12;m++){
+            for (int m=0;m<14;m++){
                 cell=row.createCell(m);
                 cell.setCellStyle(a_cellStyle);
             }
@@ -130,43 +128,53 @@ public class ExportExcel {
         sheet.addMergedRegion(cellRangeAddress);
         setBorderBottoms(cellRangeAddress,sheet);
         cell=row.createCell(2);
+        cell.setCellValue("住址:");
+        cellRangeAddress=new CellRangeAddress(2,4,2,2);
+        sheet.addMergedRegion(cellRangeAddress);
+        setBorderBottoms(cellRangeAddress,sheet);
+        cell=row.createCell(3);
+        cell.setCellValue("距离:");
+        cellRangeAddress=new CellRangeAddress(2,4,3,3);
+        sheet.addMergedRegion(cellRangeAddress);
+        setBorderBottoms(cellRangeAddress,sheet);
+        cell=row.createCell(4);
         cell.setCellValue("             第                         周");
-        cellRangeAddress=new CellRangeAddress(2,2,2,11);
+        cellRangeAddress=new CellRangeAddress(2,2,4,13);
         sheet.addMergedRegion(cellRangeAddress);
         setBorderBottoms(cellRangeAddress,sheet);
         row=sheet.getRow(3);
-        cell=row.createCell(2);
-        cell.setCellValue("星期一");
-        cellRangeAddress=new CellRangeAddress(3,3,2,3);
-        sheet.addMergedRegion(cellRangeAddress);
-        setBorderBottoms(cellRangeAddress,sheet);
-        cell.setCellStyle(a_cellStyle);
         cell=row.createCell(4);
-        cell.setCellValue("星期二");
+        cell.setCellValue("星期一");
         cellRangeAddress=new CellRangeAddress(3,3,4,5);
         sheet.addMergedRegion(cellRangeAddress);
         setBorderBottoms(cellRangeAddress,sheet);
         cell.setCellStyle(a_cellStyle);
         cell=row.createCell(6);
-        cell.setCellValue("星期三");
+        cell.setCellValue("星期二");
         cellRangeAddress=new CellRangeAddress(3,3,6,7);
         sheet.addMergedRegion(cellRangeAddress);
         setBorderBottoms(cellRangeAddress,sheet);
         cell.setCellStyle(a_cellStyle);
         cell=row.createCell(8);
-        cell.setCellValue("星期四");
+        cell.setCellValue("星期三");
         cellRangeAddress=new CellRangeAddress(3,3,8,9);
         sheet.addMergedRegion(cellRangeAddress);
         setBorderBottoms(cellRangeAddress,sheet);
         cell.setCellStyle(a_cellStyle);
         cell=row.createCell(10);
-        cell.setCellValue("星期五");
+        cell.setCellValue("星期四");
         cellRangeAddress=new CellRangeAddress(3,3,10,11);
         sheet.addMergedRegion(cellRangeAddress);
         setBorderBottoms(cellRangeAddress,sheet);
         cell.setCellStyle(a_cellStyle);
+        cell=row.createCell(12);
+        cell.setCellValue("星期五");
+        cellRangeAddress=new CellRangeAddress(3,3,12,13);
+        sheet.addMergedRegion(cellRangeAddress);
+        setBorderBottoms(cellRangeAddress,sheet);
+        cell.setCellStyle(a_cellStyle);
         row=sheet.getRow(4);
-        for (int i=2;i<11;i++){
+        for (int i=4;i<=13;i++){
             if (i%2==0) {
                 row.getCell(i).setCellValue("上午");
             }
@@ -188,22 +196,27 @@ public class ExportExcel {
         Row row1=sheet.getRow(1);
         Cell celsl=row1.getCell(5);
         celsl.setCellValue(arrayList.get(0).getBusNumber());
-        HashMap<String,ArrayList<Integer>> hashMap=new HashMap<String, ArrayList<Integer>>();
+        HashMap<String,ArrayList<String>> hashMap=new HashMap<String, ArrayList<String>>();
         HashMap<String ,String> stringStringHashMap=new HashMap<>();
+        HashMap<String ,String> stringaddressHashMap=new HashMap<>();
+        HashMap<String ,String> stringdistanceHashMap=new HashMap<>();
+
         for (int i=0;i<arrayList.size();i++) {
             StudentStatus studentStatus=arrayList.get(i);
             stringStringHashMap.put(studentStatus.getStudentName(),studentStatus.getStudentPhone());
+            stringaddressHashMap.put(studentStatus.getStudentName(),studentStatus.getAddress());
+            stringdistanceHashMap.put(studentStatus.getStudentName(),studentStatus.getDistance());
             if (hashMap.keySet().contains(studentStatus.getStudentName())){
-                ArrayList<Integer>  excelArrayList=hashMap.get(studentStatus.getStudentName());
+                ArrayList<String>  excelArrayList=hashMap.get(studentStatus.getStudentName());
                 int  weekdate=getWeekOfDate(studentStatus.getTakeTime());
                 int timeqyuuer=studentStatus.getTimeQuantum();
                 excelArrayList.set((weekdate-1)*2+timeqyuuer,studentStatus.getStatus());
             }
             else {
-                ArrayList<Integer> excelArrayList;
-                excelArrayList=new ArrayList<Integer>(11);
+                ArrayList<String> excelArrayList;
+                excelArrayList=new ArrayList<String>(11);
                 for (int z=0;z<10;z++){
-                    excelArrayList.add(0);
+                    excelArrayList.add("");
                 }
                 int  weekdate=getWeekOfDate(studentStatus.getTakeTime());
                 int timeqyuuer=studentStatus.getTimeQuantum();
@@ -216,7 +229,7 @@ public class ExportExcel {
         Iterator iterator=hashMap.keySet().iterator();
         while (iterator.hasNext()){
             String name= (String) iterator.next();
-            ArrayList<Integer> arrayList1=hashMap.get(name);
+            ArrayList<String> arrayList1=hashMap.get(name);
             Row row=sheet.createRow(index);
             Cell cell;
             cell=row.createCell(0);
@@ -225,12 +238,16 @@ public class ExportExcel {
             cell=row.createCell(1);
             cell.setCellValue(stringStringHashMap.get(name));
             cell.setCellStyle(a_cellStyle);
+            cell=row.createCell(2);
+            cell.setCellValue(stringaddressHashMap.get(name));
+            cell.setCellStyle(a_cellStyle);
+            cell=row.createCell(3);
+            cell.setCellValue(stringdistanceHashMap.get(name));
+            cell.setCellStyle(a_cellStyle);
             for (int i=0;i<arrayList1.size();i++){
-                cell=row.createCell(i+2);
-                if (arrayList1.get(i).equals(1)) {
-                    cell.setCellValue("✓");
-                    logger.debug("arrlist"+arrayList1.get(i)+"cell+"+cell.getAddress());
-                }
+                cell=row.createCell(i+4);
+                cell.setCellValue(arrayList1.get(i));
+                logger.debug("arrlist"+arrayList1.get(i)+"cell+"+cell.getAddress());
                 cell.setCellStyle(a_cellStyle);
             }
             index++;

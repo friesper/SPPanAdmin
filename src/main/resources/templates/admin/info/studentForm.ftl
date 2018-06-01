@@ -92,9 +92,9 @@
                 <tr>
                     <td>${statusInfo.busNumber}</td>
                     <td>${statusInfo.takeTime}</td>
-                    <td><#if statusInfo.timeQuantum ==0>上午</#if> <#if statusInfo.timeQuantum==1>下午</#if></td>
+                    <td>${statusInfo.dateTime}</td>
                     <td>${statusInfo.studentName}</td>
-                    <td> <#if statusInfo.status ==0>未乘车</#if> <#if statusInfo.status==1>乘车</#if></td>
+                    <td>${statusInfo.status}</td>
                     <td>${statusInfo.address}</td>
                     <td>${statusInfo.distance}</td>
                     <td>

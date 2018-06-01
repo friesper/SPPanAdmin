@@ -188,8 +188,9 @@ public class infoController extends BaseController {
               studentStatus.setStudentName(reqStatusInfo.getStudentName());
               studentStatus.setStudentPhone(reqStatusInfo.getStudentPhone());
               studentStatus.setTimeQuantum(reqStatusInfo.getTimeQuantum());
-              studentStatus.setAddress(reqStatusInfo.getAdress());
+              studentStatus.setAddress(reqStatusInfo.getAddress());
               studentStatus.setDistance(reqStatusInfo.getDistance());
+              studentStatus.setDateTime(reqStatusInfo.getDateTime());
               studentStatusService.saveOrUpdate(studentStatus);
             }
 

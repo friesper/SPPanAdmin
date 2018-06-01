@@ -36,11 +36,21 @@ public class StudentStatus extends BaseEntity {
     @Column(name = "bus_number")
     private String busNumber;
     @Column(name = "status")
-    private Integer status;
+    private String status;
     @Column(name = "address")
     private String address;
     @Column(name = "distance")
     private String  distance;
+    @Column(name = "date_time")
+    private String dateTime;
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
 
     public String getAddress() {
         return address;
@@ -58,11 +68,11 @@ public class StudentStatus extends BaseEntity {
         this.distance = distance;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

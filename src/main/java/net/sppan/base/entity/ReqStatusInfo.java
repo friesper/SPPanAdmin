@@ -17,9 +17,9 @@ public class ReqStatusInfo {
     private String studentPhone;
     private Integer timeQuantum;
     private String busNumber;
-    private Integer status;
+    private String status;
     private String distance;
-    private String adress;
+    private String address;
 
     public String getDistance() {
         return distance;
@@ -29,12 +29,21 @@ public class ReqStatusInfo {
         this.distance = distance;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String adress) {
+        this.address = adress;
+    }
+    private String dateTime;
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 
     @Override
@@ -55,11 +64,11 @@ public class ReqStatusInfo {
                 '}';
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
