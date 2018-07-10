@@ -109,4 +109,11 @@ public class AESUtils {
         }
         return result;
     }
+
+    public static void main(String args[]){
+        String  a=encrypt("huitongze","nihao");
+        System.out.println(a);
+        System.out.println(decrypt("huitong",a));
+
+    }
 }

@@ -1,6 +1,7 @@
 package net.sppan.base.controller;
 
 import net.sppan.base.common.JsonResult;
+import net.sppan.base.common.utils.AESUtils;
 import net.sppan.base.config.shiro.CustomizedToken;
 import net.sppan.base.entity.LoginType;
 import net.sppan.base.entity.ReqUser;
@@ -27,6 +28,8 @@ public class UserLoginController extends BaseController {
                         @RequestParam("password") String password,
                         ModelMap model) {
         try {
+            username=AESUtils.decrypt("huitong",username);
+            password=AESUtils.decrypt("huitong",password);
             Subject subject = SecurityUtils.getSubject();
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             CustomizedToken customizedToken = new CustomizedToken(username, password, USER_LOGIN_TYPE);
